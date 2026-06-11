@@ -44,6 +44,13 @@ public class ExerciseController {
         return new ResponseEntity<>(exercises, HttpStatus.FOUND);
     }
 
+    @PutMapping("done/{id}")
+    public ResponseEntity<Exercise> setExerciseToDone(@PathVariable Long id) {
+        
+        Exercise exercise = exerciseService.setExerciseToDone(id);
+        return new ResponseEntity<>(exercise, HttpStatus.OK);
+    }
+
     @PutMapping("/edit")
     public ResponseEntity<Exercise> editExercise(@RequestBody ExerciseDTO exerciseDTO, @RequestParam Long id) {
 
