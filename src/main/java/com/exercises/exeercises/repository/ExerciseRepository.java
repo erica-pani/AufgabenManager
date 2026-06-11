@@ -7,6 +7,5 @@ import com.exercises.exeercises.model.Exercise;
 
 @Repository
 public interface ExerciseRepository extends JpaRepository<Exercise, Long>{
-
     boolean existsById(Long id);
 }   
