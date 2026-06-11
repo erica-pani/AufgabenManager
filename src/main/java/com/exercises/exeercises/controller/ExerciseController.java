@@ -35,7 +35,6 @@ public class ExerciseController {
 
         Exercise exercise = exerciseService.saveNewExercise(exerciseDTO);
         return new ResponseEntity<>(exercise, HttpStatus.CREATED);
-
     }
 
     @GetMapping("/myExercises")

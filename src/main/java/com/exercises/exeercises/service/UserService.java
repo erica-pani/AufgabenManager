@@ -15,7 +15,6 @@ public class UserService {
         this.userRepository = userRepository;
     }
     
-
     public User saveNewUser(UserDTO user) {
 
         User userToBeSaved = new User();

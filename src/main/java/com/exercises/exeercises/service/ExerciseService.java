@@ -21,6 +21,12 @@ public class ExerciseService {
         this.exerciseRepository = exerciseRepository;
     }
 
+    /**
+     * Die Methode nimmt ein DTO entgegen in dem Informationen zur einer neuen Aufgabe gespeichert sind. Erstellt ein neues Hausaufgaben Objekt,
+     * mit den Parametern vom DTO und speichert es in der Datenbank
+     * @param exercise exercise ist das DTO in dem Titel und Beschreibung für die eine neue Aufgabe erstellt werden soll.
+     * @return Die gespeicherte Entität
+     */
     public Exercise saveNewExercise(ExerciseDTO exercise) {
 
         Exercise exerciseToBeSaved = new Exercise();
