@@ -15,10 +15,14 @@ public class UserService {
         this.userRepository = userRepository;
     }
     
-
     public User saveNewUser(UserDTO user) {
 
         User userToBeSaved = new User();
+
+        if (userRepository.existsByUsername(user.getUsername())) {
+            throw new IllegalArgumentException("User mit diesem username existiert bereits");
+        }
+        
         userToBeSaved.setUsername(user.getUsername());
         userToBeSaved.setPassword(user.getPassword());
 

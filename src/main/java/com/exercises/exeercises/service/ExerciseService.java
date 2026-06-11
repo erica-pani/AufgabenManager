@@ -21,6 +21,12 @@ public class ExerciseService {
         this.exerciseRepository = exerciseRepository;
     }
 
+    /**
+     * Die Methode nimmt ein DTO entgegen in dem Informationen zur einer neuen Aufgabe gespeichert sind. Erstellt ein neues Hausaufgaben Objekt,
+     * mit den Parametern vom DTO und speichert es in der Datenbank
+     * @param exercise DTO das die Attribute für die neue Aufgabe enthält
+     * @return Die gespeicherte Entität
+     */
     public Exercise saveNewExercise(ExerciseDTO exercise) {
 
         Exercise exerciseToBeSaved = new Exercise();
@@ -37,6 +43,14 @@ public class ExerciseService {
         return exerciseRepository.findAll();
     }
 
+    /**
+     * Setzt den Status einer Übung auf {@link Status#DONE} und speichert die Änderung
+     * in der Datenbank.
+     *
+     * @param exerciseId die ID der Übung, die als erledigt markiert werden soll
+     * @return die aktualisierte und gespeicherte Übung
+     * @throws EntityNotFoundException wenn keine Übung mit der angegebenen ID gefunden wird
+     */
     public Exercise setExerciseToDone(Long exerciseId) {
 
         Exercise exercise = exerciseRepository
@@ -48,6 +62,30 @@ public class ExerciseService {
         return exerciseRepository.save(exercise);
     }
 
+    /**
+     * Setzt den Status einer Übung auf {@link Status#IN_PROGRESS} und speichert die Änderung
+     * in der Datenbank.
+     *
+     * @param exerciseId die ID der Übung, die als in Bearbeitung markiert werden soll
+     * @return die aktualisierte und gespeicherte Übung
+     * @throws EntityNotFoundException wenn keine Übung mit der angegebenen ID gefunden wird
+     */
+    public Exercise setExerciseToInProgress(Long exerciseId) {
+         Exercise exercise = exerciseRepository
+                .findById(exerciseId)
+                .orElseThrow(() -> new EntityNotFoundException("Aufgabe nicht gefunden"));
+
+        exercise.setStatus(Status.IN_PROGRESS);
+
+        return exerciseRepository.save(exercise);
+    }
+
+    /**
+     * Löscht eine Übung anhand ihrer ID.
+     *
+     * @param exerciseId die ID der zu löschenden Übung
+     * @throws EntityNotFoundException wenn keine Übung mit der angegebenen ID gefunden wird
+     */
     public void deleteExercise(Long exerciseId) {
 
         if (!exerciseRepository.existsById(exerciseId)) {
@@ -57,6 +95,15 @@ public class ExerciseService {
        exerciseRepository.deleteById(exerciseId);
     }
 
+    /**
+     * Aktualisiert die Daten einer bestehenden Übung anhand der übergebenen Informationen
+     * und speichert die Änderungen in der Datenbank.
+     *
+     * @param exerciseDTO die neuen Daten der Übung
+     * @param exerciseId die ID der zu bearbeitenden Übung
+     * @return die aktualisierte und gespeicherte Übung
+     * @throws EntityNotFoundException wenn keine Übung mit der angegebenen ID gefunden wird
+     */
     public Exercise editExercise(ExerciseDTO exerciseDTO, Long exerciseId) {
 
         Exercise exercise = exerciseRepository
@@ -69,6 +116,4 @@ public class ExerciseService {
         return exerciseRepository.save(exercise);
         
     }
-
-
 }
