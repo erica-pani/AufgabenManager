@@ -1,10 +1,29 @@
 package com.exercises.exeercises.model;
 
+
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.ManyToOne;
+
 public class Board {
     
     private Long id;
     private String name;
 
-    private User user;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
 }

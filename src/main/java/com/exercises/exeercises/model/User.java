@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.annotations.Any;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
@@ -28,6 +30,9 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Exercise> exercises = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Board> boards = new ArrayList<>();
 
     @JsonIgnore
     @ManyToMany(mappedBy = "member")
