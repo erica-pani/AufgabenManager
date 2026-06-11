@@ -51,6 +51,13 @@ public class ExerciseController {
         return new ResponseEntity<>(exercise, HttpStatus.OK);
     }
 
+    @PutMapping("inProgress/{id}")
+    public ResponseEntity<Exercise> setExerciseToInProgress(@PathVariable Long id) {
+        
+        Exercise exercise = exerciseService.setExerciseToInProgress(id);
+        return new ResponseEntity<>(exercise, HttpStatus.OK);
+    }
+
     @PutMapping("/edit")
     public ResponseEntity<Exercise> editExercise(@RequestBody ExerciseDTO exerciseDTO, @RequestParam Long id) {
 
