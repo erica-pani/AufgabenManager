@@ -48,6 +48,16 @@ public class ExerciseService {
         return exerciseRepository.save(exercise);
     }
 
+    public Exercise setExerciseToInProgress(Long exerciseId) {
+         Exercise exercise = exerciseRepository
+                .findById(exerciseId)
+                .orElseThrow(() -> new EntityNotFoundException("Aufgabe nicht gefunden"));
+
+        exercise.setStatus(Status.IN_PROGRESS);
+
+        return exerciseRepository.save(exercise);
+    }
+
     public void deleteExercise(Long exerciseId) {
 
         if (!exerciseRepository.existsById(exerciseId)) {
