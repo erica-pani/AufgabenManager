@@ -36,7 +36,7 @@ public class Team {
     )
     private Set<User> member = new HashSet<>();
 
-    @OneToMany(mappedBy = "team")
+    @OneToMany(mappedBy = "owner")
     private List<Board> boards = new ArrayList<>(); 
 
     public Long getId() {

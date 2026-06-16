@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.exercises.exeercises.model.Exercise;
-import com.exercises.exeercises.model.ExerciseDTO;
+import com.exercises.exeercises.model.DTO.ExerciseDTO;
 import com.exercises.exeercises.service.ExerciseService;
 
 import org.springframework.web.bind.annotation.DeleteMapping;

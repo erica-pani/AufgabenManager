@@ -28,10 +28,7 @@ public class User {
     private String username;
     private String password;
 
-    @OneToMany(mappedBy = "user")
-    private List<Exercise> exercises = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "owner")
     private List<Board> boards = new ArrayList<>();
 
     @JsonIgnore
@@ -61,14 +58,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public List<Exercise> getExercises() {
-        return exercises;
-    }
-
-    public void setExercises(List<Exercise> exercises) {
-        this.exercises = exercises;
     }
 
     public Set<Team> getTeams() {

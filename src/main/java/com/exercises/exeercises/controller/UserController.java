@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.exercises.exeercises.model.User;
-import com.exercises.exeercises.model.UserDTO;
+import com.exercises.exeercises.model.DTO.UserDTO;
 import com.exercises.exeercises.service.UserService;
 
 import org.springframework.http.HttpStatus;
