@@ -3,7 +3,7 @@ package com.exercises.exeercises.service;
 import org.springframework.stereotype.Service;
 
 import com.exercises.exeercises.model.User;
-import com.exercises.exeercises.model.DTO.UserDTO;
+import com.exercises.exeercises.model.dto.UserDTO;
 import com.exercises.exeercises.repository.UserRepository;
 
 @Service

@@ -2,7 +2,7 @@ package com.exercises.exeercises.model;
 
 import java.time.LocalDate;
 
-import com.exercises.exeercises.model.Id.ExerciseId;
+import com.exercises.exeercises.model.id.ExerciseId;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -31,6 +31,9 @@ public class Exercise {
     @MapsId("boardId")
     @JoinColumn(name = "board_id", referencedColumnName = "id")
     private Board board;
+
+    @ManyToOne
+    private Category category;
 
 
     public String getTitle() {

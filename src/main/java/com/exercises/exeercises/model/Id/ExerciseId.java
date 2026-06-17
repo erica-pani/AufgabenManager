@@ -1,4 +1,4 @@
-package com.exercises.exeercises.model.Id;
+package com.exercises.exeercises.model.id;
 
 import java.io.Serializable;
 import java.util.Objects;

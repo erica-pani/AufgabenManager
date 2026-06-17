@@ -1,8 +1,11 @@
-package com.exercises.exeercises.model.Id;
+package com.exercises.exeercises.model.id;
 
 import java.io.Serializable;
 import java.util.Objects;
 
+import jakarta.persistence.Embeddable;
+
+@Embeddable
 public class CategoryId implements Serializable{
     
     private Long boardId;

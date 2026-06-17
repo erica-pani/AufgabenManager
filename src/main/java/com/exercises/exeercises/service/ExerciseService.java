@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.exercises.exeercises.model.Exercise;
 import com.exercises.exeercises.model.Status;
-import com.exercises.exeercises.model.DTO.ExerciseDTO;
+import com.exercises.exeercises.model.dto.ExerciseDTO;
 import com.exercises.exeercises.repository.ExerciseRepository;
 
 import jakarta.persistence.EntityNotFoundException;

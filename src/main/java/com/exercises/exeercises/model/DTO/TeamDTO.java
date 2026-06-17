@@ -1,4 +1,4 @@
-package com.exercises.exeercises.model.DTO;
+package com.exercises.exeercises.model.dto;
 
 import java.util.List;
 

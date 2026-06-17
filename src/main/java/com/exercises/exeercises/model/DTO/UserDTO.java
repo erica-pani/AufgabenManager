@@ -1,4 +1,4 @@
-package com.exercises.exeercises.model.DTO;
+package com.exercises.exeercises.model.dto;
 
 public class UserDTO {
 
