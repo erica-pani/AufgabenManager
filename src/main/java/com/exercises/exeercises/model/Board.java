@@ -1,5 +1,6 @@
 package com.exercises.exeercises.model;
 
+import com.exercises.exeercises.model.enums.Owner;
 
 import java.util.ArrayList;
 import java.util.List;

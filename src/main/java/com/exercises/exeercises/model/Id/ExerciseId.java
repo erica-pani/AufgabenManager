@@ -11,8 +11,18 @@ public class ExerciseId implements Serializable{
     private Long boardId;
     private Integer exerciseNumber;
 
+    /**
+     * Standardkonstruktor für eine ExerciseId.
+     * Wird beispielsweise von JPA oder Serialisierungsframeworks benötigt.
+     */
     public ExerciseId() {}
 
+    /**
+     * Erzeugt eine ExerciseId anhand der Board-ID und der Aufgabennummer.
+     *
+     * @param boardId die ID des Boards, zu dem die Aufgabe gehört
+     * @param exerciseNumber die Nummer der Aufgabe innerhalb des Boards
+     */
     public ExerciseId(Long boardId, Integer exerciseNumber) {
         this.boardId = boardId;
         this.exerciseNumber = exerciseNumber;

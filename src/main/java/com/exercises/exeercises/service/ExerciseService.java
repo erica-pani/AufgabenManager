@@ -6,8 +6,10 @@ import java.util.Collection;
 import org.springframework.stereotype.Service;
 
 import com.exercises.exeercises.model.Exercise;
-import com.exercises.exeercises.model.Status;
 import com.exercises.exeercises.model.dto.ExerciseDTO;
+import com.exercises.exeercises.model.enums.Status;
+import com.exercises.exeercises.model.id.ExerciseId;
+import com.exercises.exeercises.repository.BoardRepository;
 import com.exercises.exeercises.repository.ExerciseRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -16,9 +18,11 @@ import jakarta.persistence.EntityNotFoundException;
 public class ExerciseService {
 
     private final ExerciseRepository exerciseRepository;
+    private final BoardRepository boardRepository;
 
-    public ExerciseService(ExerciseRepository exerciseRepository) {
+    public ExerciseService(ExerciseRepository exerciseRepository, BoardRepository boardRepository) {
         this.exerciseRepository = exerciseRepository;
+        this.boardRepository = boardRepository;
     }
 
     /**
@@ -29,7 +33,14 @@ public class ExerciseService {
      */
     public Exercise saveNewExercise(ExerciseDTO exercise) {
 
+        var maxExerciseNumber = exerciseRepository.findMaxExerciseNumber(exercise.getBoardId()).orElse(0);
+        var board = boardRepository.findById(exercise.getBoardId()).orElseThrow(() -> new EntityNotFoundException("board not found"));
+        ExerciseId id = new ExerciseId(exercise.getBoardId(), maxExerciseNumber + 1);
+
+
         Exercise exerciseToBeSaved = new Exercise();
+        exerciseToBeSaved.setId(id);
+        exerciseToBeSaved.setBoard(board);
         exerciseToBeSaved.setTitle(exercise.getTitle());
         exerciseToBeSaved.setDescription(exercise.getDescription());
         exerciseToBeSaved.setStatus(Status.TODO);
@@ -51,7 +62,7 @@ public class ExerciseService {
      * @return die aktualisierte und gespeicherte Übung
      * @throws EntityNotFoundException wenn keine Übung mit der angegebenen ID gefunden wird
      */
-    public Exercise setExerciseToDone(Long exerciseId) {
+    public Exercise setExerciseToDone(ExerciseId exerciseId) {
 
         Exercise exercise = exerciseRepository
                 .findById(exerciseId)
@@ -70,7 +81,7 @@ public class ExerciseService {
      * @return die aktualisierte und gespeicherte Übung
      * @throws EntityNotFoundException wenn keine Übung mit der angegebenen ID gefunden wird
      */
-    public Exercise setExerciseToInProgress(Long exerciseId) {
+    public Exercise setExerciseToInProgress(ExerciseId exerciseId) {
          Exercise exercise = exerciseRepository
                 .findById(exerciseId)
                 .orElseThrow(() -> new EntityNotFoundException("Aufgabe nicht gefunden"));
@@ -86,7 +97,7 @@ public class ExerciseService {
      * @param exerciseId die ID der zu löschenden Übung
      * @throws EntityNotFoundException wenn keine Übung mit der angegebenen ID gefunden wird
      */
-    public void deleteExercise(Long exerciseId) {
+    public void deleteExercise(ExerciseId exerciseId) {
 
         if (!exerciseRepository.existsById(exerciseId)) {
             throw new EntityNotFoundException("Aufgabe nicht gefunden");
@@ -104,7 +115,7 @@ public class ExerciseService {
      * @return die aktualisierte und gespeicherte Übung
      * @throws EntityNotFoundException wenn keine Übung mit der angegebenen ID gefunden wird
      */
-    public Exercise editExercise(ExerciseDTO exerciseDTO, Long exerciseId) {
+    public Exercise editExercise(ExerciseDTO exerciseDTO, ExerciseId exerciseId) {
 
         Exercise exercise = exerciseRepository
                 .findById(exerciseId)

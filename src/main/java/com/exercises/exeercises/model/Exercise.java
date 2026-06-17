@@ -2,6 +2,7 @@ package com.exercises.exeercises.model;
 
 import java.time.LocalDate;
 
+import com.exercises.exeercises.model.enums.Status;
 import com.exercises.exeercises.model.id.ExerciseId;
 
 import jakarta.persistence.EmbeddedId;
