@@ -26,8 +26,8 @@ public class User {
     private String username;
     private String password;
 
-    @OneToMany(mappedBy = "user")
-    private List<Exercise> exercises = new ArrayList<>();
+    @OneToMany(mappedBy = "owner")
+    private List<Board> boards = new ArrayList<>();
 
     @JsonIgnore
     @ManyToMany(mappedBy = "member")
@@ -58,14 +58,6 @@ public class User {
         this.password = password;
     }
 
-    public List<Exercise> getExercises() {
-        return exercises;
-    }
-
-    public void setExercises(List<Exercise> exercises) {
-        this.exercises = exercises;
-    }
-
     public Set<Team> getTeams() {
         return teams;
     }
@@ -76,5 +68,17 @@ public class User {
 
     public void addTeam(Team team) {
         teams.add(team);
+    }
+
+    public List<Board> getBoards() {
+        return boards;
+    }
+
+    public void setBoards(List<Board> boards) {
+        this.boards = boards;
+    }
+
+    public void addBoard(Board board) {
+        boards.add(board);
     }
 }

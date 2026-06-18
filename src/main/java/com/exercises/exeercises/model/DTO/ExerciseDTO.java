@@ -1,9 +1,10 @@
-package com.exercises.exeercises.model;
+package com.exercises.exeercises.model.dto;
 
 public class ExerciseDTO {
 
     private String title;
     private String description;
+    private Long boardId;
     
     
     public void setTitle(String title) {
@@ -20,6 +21,14 @@ public class ExerciseDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Long getBoardId() {
+        return boardId;
+    }
+
+    public void setBoardId(Long boardId) {
+        this.boardId = boardId;
     }
 
     

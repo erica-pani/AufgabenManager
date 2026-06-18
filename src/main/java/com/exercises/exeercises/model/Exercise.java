@@ -2,38 +2,40 @@ package com.exercises.exeercises.model;
 
 import java.time.LocalDate;
 
+import com.exercises.exeercises.model.enums.Status;
+import com.exercises.exeercises.model.id.ExerciseId;
+
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "aufgaben")
 public class Exercise {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @EmbeddedId
+    private ExerciseId id;
+
     private String title;
     private String description;
+
+    @Enumerated(EnumType.STRING)
     private Status status;
     private LocalDate creationDate;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    @MapsId("boardId")
+    @JoinColumn(name = "board_id", referencedColumnName = "id")
+    private Board board;
 
+    @ManyToOne
+    private Category category;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getTitle() {
         return title;
@@ -66,5 +68,24 @@ public class Exercise {
     public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
     }
+
+    public ExerciseId getId() {
+        return id;
+    }
+
+    public void setId(ExerciseId id) {
+        this.id = id;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+        board.addExercise(this);
+    }
+
+    
     
 }

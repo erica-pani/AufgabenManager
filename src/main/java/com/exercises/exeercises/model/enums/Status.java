@@ -1,4 +1,4 @@
-package com.exercises.exeercises.model;
+package com.exercises.exeercises.model.enums;
 
 public enum Status {
     TODO,
