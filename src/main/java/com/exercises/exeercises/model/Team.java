@@ -68,5 +68,17 @@ public class Team {
         user.addTeam(this);
     }
 
+    public void addBoard(Board board) {
+        boards.add(board);
+    }
+
+    public List<Board> getBoards() {
+        return boards;
+    }
+
+    public void setBoards(List<Board> boards) {
+        this.boards = boards;
+    }
+
     
 }

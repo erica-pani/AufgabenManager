@@ -69,4 +69,16 @@ public class User {
     public void addTeam(Team team) {
         teams.add(team);
     }
+
+    public List<Board> getBoards() {
+        return boards;
+    }
+
+    public void setBoards(List<Board> boards) {
+        this.boards = boards;
+    }
+
+    public void addBoard(Board board) {
+        boards.add(board);
+    }
 }

@@ -41,8 +41,7 @@ public class ExerciseController {
     @GetMapping("/myExercises")
     public ResponseEntity<Collection<Exercise>> getExercises() {
 
-        Collection<Exercise> exercises = exerciseService.getExercises();
-        return new ResponseEntity<>(exercises, HttpStatus.FOUND);
+        return null;
     }
 
     @PutMapping("done/{boardId}/{exerciseNumber}")

@@ -1,5 +1,6 @@
 package com.exercises.exeercises.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,5 +19,7 @@ public interface ExerciseRepository extends JpaRepository<Exercise, ExerciseId>{
         WHERE e.id.boardId = :boardId
         """)
     Optional<Integer> findMaxExerciseNumber(Long boardId);
+
+    List<Exercise> findAllByBoardId(Long id);
 
 }   

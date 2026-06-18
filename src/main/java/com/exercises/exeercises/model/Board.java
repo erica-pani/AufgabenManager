@@ -24,6 +24,8 @@ public class Board {
     @Enumerated(EnumType.STRING)
     private Owner owner;
 
+    private Long ownerId;
+
     @OneToMany(mappedBy = "board")
     private List<Exercise> exercises = new ArrayList<>();
 
@@ -41,6 +43,30 @@ public class Board {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Owner getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Owner owner) {
+        this.owner = owner;
+    }
+
+    public List<Exercise> getExercises() {
+        return exercises;
+    }
+
+    public void setExercises(List<Exercise> exercises) {
+        this.exercises = exercises;
+    }
+
+    public Long getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 
 }

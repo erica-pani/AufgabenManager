@@ -49,9 +49,9 @@ public class ExerciseService {
         return exerciseRepository.save(exerciseToBeSaved);
     }
 
-    public Collection<Exercise> getExercises() {
+    public Collection<Exercise> getExercisesByBoardId(Long boardId) {
 
-        return exerciseRepository.findAll();
+        return exerciseRepository.findAllByBoardId(boardId);
     }
 
     /**
