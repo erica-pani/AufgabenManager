@@ -1,7 +1,5 @@
 package com.exercises.exeercises.model.dto;
 
-import com.exercises.exeercises.model.enums.Owner;
-
 public class BoardDTO {
     
     private String name;

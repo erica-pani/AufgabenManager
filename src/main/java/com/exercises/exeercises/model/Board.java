@@ -61,6 +61,11 @@ public class Board {
         this.exercises = exercises;
     }
 
+    public void addExercise(Exercise exercise) {
+        exercises.add(exercise);
+    }
+
+
     public Long getOwnerId() {
         return ownerId;
     }

@@ -2,9 +2,11 @@ package com.exercises.exeercises.service;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.stream.Gatherer.Integrator;
 
 import org.springframework.stereotype.Service;
 
+import com.exercises.exeercises.model.Board;
 import com.exercises.exeercises.model.Exercise;
 import com.exercises.exeercises.model.dto.ExerciseDTO;
 import com.exercises.exeercises.model.enums.Status;
@@ -33,8 +35,8 @@ public class ExerciseService {
      */
     public Exercise saveNewExercise(ExerciseDTO exercise) {
 
-        var maxExerciseNumber = exerciseRepository.findMaxExerciseNumber(exercise.getBoardId()).orElse(0);
-        var board = boardRepository.findById(exercise.getBoardId()).orElseThrow(() -> new EntityNotFoundException("board not found"));
+        Integer maxExerciseNumber = exerciseRepository.findMaxExerciseNumber(exercise.getBoardId()).orElse(0);
+        Board board = boardRepository.findById(exercise.getBoardId()).orElseThrow(() -> new EntityNotFoundException("board not found"));
         ExerciseId id = new ExerciseId(exercise.getBoardId(), maxExerciseNumber + 1);
 
 

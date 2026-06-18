@@ -83,6 +83,7 @@ public class Exercise {
 
     public void setBoard(Board board) {
         this.board = board;
+        board.addExercise(this);
     }
 
     
