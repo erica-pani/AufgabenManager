@@ -26,11 +26,32 @@ public class BoardService {
         this.teamRepository = teamRepository;
     }
 
+    /**
+     * Erstellt ein neues Board und weist es entweder einem Benutzer oder einem Team zu.
+     * <p>
+     * Die Eigentümerart wird anhand des Flags {@code ownerisUser} im {@link BoardDTO}
+     * bestimmt. Anschließend wird geprüft, ob die angegebene Owner-ID existiert.
+     * Das Board wird dem entsprechenden Benutzer bzw. Team hinzugefügt und danach
+     * in der Datenbank gespeichert.
+     * </p>
+     *
+     * @param boarddto DTO mit den Informationen für das anzulegende Board.
+     *                 Enthält den Namen des Boards, die Owner-ID sowie die Information,
+     *                 ob der Eigentümer ein Benutzer oder ein Team ist.
+     * @return Das gespeicherte {@link Board}-Objekt inklusive der von der Datenbank
+     *         vergebenen Werte.
+     * @throws EntityNotFoundException wenn kein Benutzer bzw. Team mit der angegebenen
+     *                                 Owner-ID gefunden wird.
+     */
     public Board createNewBoard(BoardDTO boarddto) {
 
         Board boardToBeSaved = new Board();
         boardToBeSaved.setName(boarddto.getName());
-        boardToBeSaved.setOwner(boarddto.getOwner());
+        boardToBeSaved.setOwner(Owner.USER);
+        
+        if (!boarddto.isOwnerisUser()) {
+            boardToBeSaved.setOwner(Owner.TEAM);
+        }
 
         if (boardToBeSaved.getOwner() == Owner.TEAM) {
             Team team = teamRepository
