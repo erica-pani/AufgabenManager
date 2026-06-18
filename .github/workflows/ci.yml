@@ -30,8 +30,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Run Tests
-        run: ./gradlew test
+      - name: Run Lint + Tests
+        run: ./gradlew check --no-daemon
 
       - name: Build
         run: ./gradlew build --no-daemon
