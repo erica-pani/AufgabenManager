@@ -34,8 +34,14 @@ public class ExerciseService {
      */
     public Exercise saveNewExercise(ExerciseDTO exercise) {
 
-        Integer maxExerciseNumber = exerciseRepository.findMaxExerciseNumber(exercise.getBoardId()).orElse(0);
-        Board board = boardRepository.findById(exercise.getBoardId()).orElseThrow(() -> new EntityNotFoundException("board not found"));
+        Integer maxExerciseNumber = exerciseRepository
+            .findMaxExerciseNumber(exercise.getBoardId())
+            .orElse(0);
+
+        Board board = boardRepository
+            .findById(exercise.getBoardId()).
+            orElseThrow(() -> new EntityNotFoundException("board not found"));
+            
         ExerciseId id = new ExerciseId(exercise.getBoardId(), maxExerciseNumber + 1);
 
 
