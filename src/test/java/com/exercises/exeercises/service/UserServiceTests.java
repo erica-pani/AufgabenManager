@@ -35,9 +35,7 @@ public class UserServiceTests {
 
     @BeforeEach
     public void setUpTestCase() {
-        user = new UserDTO();
-        user.setUsername(validUsername);
-        user.setPassword(validPassword);
+        user = new UserDTO(validUsername, validPassword);
     }
 
     @AfterEach
