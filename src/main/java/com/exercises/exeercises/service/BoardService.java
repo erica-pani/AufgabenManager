@@ -46,16 +46,16 @@ public class BoardService {
     public Board createNewBoard(BoardDTO boarddto) {
 
         Board boardToBeSaved = new Board();
-        boardToBeSaved.setName(boarddto.getName());
+        boardToBeSaved.setName(boarddto.name());
         boardToBeSaved.setOwner(Owner.USER);
         
-        if (!boarddto.isOwnerisUser()) {
+        if (!boarddto.ownerisUser()) {
             boardToBeSaved.setOwner(Owner.TEAM);
         }
 
         if (boardToBeSaved.getOwner() == Owner.TEAM) {
             Team team = teamRepository
-                .findById(boarddto.getOwnerId())
+                .findById(boarddto.ownerId())
                 .orElseThrow(() -> new EntityNotFoundException("Team mit dieser id existiert nicht"));
             
             team.addBoard(boardToBeSaved);
@@ -64,7 +64,7 @@ public class BoardService {
 
         if (boardToBeSaved.getOwner() == Owner.USER) {
             User user = userRepository
-                .findById(boarddto.getOwnerId())
+                .findById(boarddto.ownerId())
                 .orElseThrow(() -> new EntityNotFoundException("User mit dieser id existiert nicht"));
             
             user.addBoard(boardToBeSaved);
