@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.test.web.reactive.server.WebTestClient.RequestBodySpec;
 import org.springframework.test.web.servlet.client.RestTestClient;
 import org.springframework.web.context.WebApplicationContext;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -22,7 +19,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import com.exercises.exeercises.config.IntegrationTestConfig;
 import com.exercises.exeercises.model.Board;
-import com.exercises.exeercises.model.Exercise;
 import com.exercises.exeercises.model.dto.ExerciseDTO;
 import com.exercises.exeercises.model.dto.ExerciseResponseDTO;
 import com.exercises.exeercises.repository.BoardRepository;
