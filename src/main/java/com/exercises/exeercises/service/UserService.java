@@ -19,12 +19,12 @@ public class UserService {
 
         User userToBeSaved = new User();
 
-        if (userRepository.existsByUsername(user.getUsername())) {
+        if (userRepository.existsByUsername(user.username())) {
             throw new IllegalArgumentException("User mit diesem username existiert bereits");
         }
         
-        userToBeSaved.setUsername(user.getUsername());
-        userToBeSaved.setPassword(user.getPassword());
+        userToBeSaved.setUsername(user.username());
+        userToBeSaved.setPassword(user.password());
 
         return userRepository.save(userToBeSaved);
     }

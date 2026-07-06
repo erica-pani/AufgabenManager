@@ -45,7 +45,6 @@ public class BoardServiceTests {
     @InjectMocks
     private BoardService target;
 
-    private BoardDTO boardDTO;
     private User user;
     private Team team;
     Long teamId = 89023L;
@@ -56,9 +55,6 @@ public class BoardServiceTests {
     @BeforeEach
     public void setUpTestCase() {
 
-        boardDTO = new BoardDTO();
-        boardDTO.setName(boardName);
-
         user = new User();
         user.setId(userId);
 
@@ -68,8 +64,8 @@ public class BoardServiceTests {
 
     @Test
     public void createNewBoard_whenOwnerIsUser() {
-        boardDTO.setOwnerisUser(true);
-        boardDTO.setOwnerId(userId);
+
+        BoardDTO boardDTO = new BoardDTO(boardName, true, userId);
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(boardRepository.save(any(Board.class)))
@@ -92,8 +88,8 @@ public class BoardServiceTests {
 
     @Test
     public void createNewBoard_whenOwnerIsTeam() {
-        boardDTO.setOwnerisUser(false);
-        boardDTO.setOwnerId(teamId);
+
+        BoardDTO boardDTO = new BoardDTO(boardName, false, teamId);
 
         when(teamRepository.findById(teamId)).thenReturn(Optional.of(team));
         when(boardRepository.save(any(Board.class)))
@@ -116,8 +112,8 @@ public class BoardServiceTests {
 
     @Test
     public void createNewBoard_whenUserNotFound() {
-        boardDTO.setOwnerisUser(true);
-        boardDTO.setOwnerId(userId);
+
+        BoardDTO boardDTO = new BoardDTO(boardName, true, userId);
 
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
@@ -130,8 +126,8 @@ public class BoardServiceTests {
 
     @Test
     public void createNewBoard_whenTeamNotFound() {
-        boardDTO.setOwnerisUser(false);
-        boardDTO.setOwnerId(teamId);
+    
+        BoardDTO boardDTO = new BoardDTO(boardName, false, teamId);
 
         when(teamRepository.findById(teamId)).thenReturn(Optional.empty());
 

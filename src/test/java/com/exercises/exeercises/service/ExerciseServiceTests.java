@@ -55,10 +55,7 @@ public class ExerciseServiceTests {
         board = new Board();
         board.setId(boardId);
 
-        exerciseDTO = new ExerciseDTO();
-        exerciseDTO.setBoardId(boardId);
-        exerciseDTO.setTitle(title);
-        exerciseDTO.setDescription(description);
+        exerciseDTO = new ExerciseDTO(title, description, boardId);
 
         exerciseId = new ExerciseId();
         exercise = new Exercise();

@@ -15,6 +15,12 @@ import jakarta.persistence.OneToMany;
 
 @Entity
 public class Board {
+
+    public Board() {}
+
+    public Board(Long id) {
+        this.id = id;
+    }
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
