@@ -1,4 +1,4 @@
-package com.exercises.exeercises.testconfig;
+package com.exercises.exeercises.config;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;

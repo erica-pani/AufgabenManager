@@ -3,6 +3,7 @@ package com.exercises.exeercises.controller;
 import java.util.Collection;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -31,7 +32,10 @@ public class ExerciseController {
         this.exerciseService = exerciseService;
     }
 
-    @PostMapping("/add")
+    @PostMapping(value = "/add",
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public ResponseEntity<Exercise> newExercise(@RequestBody ExerciseDTO exerciseDTO) {
 
         Exercise exercise = exerciseService.saveNewExercise(exerciseDTO);

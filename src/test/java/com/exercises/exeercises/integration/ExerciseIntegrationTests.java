@@ -14,12 +14,12 @@ import org.springframework.context.annotation.Import;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.containers.PostgreSQLContainer;
 
+import com.exercises.exeercises.config.IntegrationTestConfig;
 import com.exercises.exeercises.model.Board;
 import com.exercises.exeercises.model.Exercise;
 import com.exercises.exeercises.model.id.ExerciseId;
 import com.exercises.exeercises.repository.BoardRepository;
 import com.exercises.exeercises.repository.ExerciseRepository;
-import com.exercises.exeercises.testconfig.IntegrationTestConfig;
 
 @SpringBootTest
 @Testcontainers

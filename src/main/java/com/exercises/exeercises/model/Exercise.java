@@ -36,6 +36,9 @@ public class Exercise {
     @ManyToOne
     private Category category;
 
+    public Exercise() {
+        //NoArgsConstructor
+    }
 
     public String getTitle() {
         return title;
