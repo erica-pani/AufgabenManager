@@ -54,31 +54,31 @@ public class ExerciseController {
     }
 
     @PutMapping("done/{boardId}/{exerciseNumber}")
-    public ResponseEntity<Exercise> setExerciseToDone(@PathVariable Long boardId, @PathVariable Integer exerciseNumber) {
+    public ResponseEntity<ExerciseResponseDTO> setExerciseToDone(@PathVariable Long boardId, @PathVariable Integer exerciseNumber) {
         
         Exercise exercise = exerciseService.setExerciseToDone(new ExerciseId(boardId, exerciseNumber));
-        return new ResponseEntity<>(exercise, HttpStatus.OK);
+        return new ResponseEntity<>(exerciseMapper.toDto(exercise), HttpStatus.OK);
     }
 
     @PutMapping("inProgress/{boardId}/{exerciseNumber}")
-    public ResponseEntity<Exercise> setExerciseToInProgress(@PathVariable Long boardId, @PathVariable Integer exerciseNumber) {
+    public ResponseEntity<ExerciseResponseDTO> setExerciseToInProgress(@PathVariable Long boardId, @PathVariable Integer exerciseNumber) {
         
         Exercise exercise = exerciseService.setExerciseToInProgress(new ExerciseId(boardId, exerciseNumber));
-        return new ResponseEntity<>(exercise, HttpStatus.OK);
+        return new ResponseEntity<>(exerciseMapper.toDto(exercise), HttpStatus.OK);
     }
 
     @PutMapping("/edit")
-    public ResponseEntity<Exercise> editExercise(@RequestBody ExerciseDTO exerciseDTO, @RequestParam Long boardId, @RequestParam Integer exerciseNumber) {
+    public ResponseEntity<ExerciseResponseDTO> editExercise(@RequestBody ExerciseDTO exerciseDTO, @RequestParam Long boardId, @RequestParam Integer exerciseNumber) {
 
         Exercise exercise = exerciseService.editExercise(exerciseDTO, new ExerciseId(boardId, exerciseNumber));
-        return new ResponseEntity<>(exercise, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(exerciseMapper.toDto(exercise), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/delete/{boardId}/{exerciseNumber}")
     public ResponseEntity<?> deleteExercise(@PathVariable Long boardId, @PathVariable Integer exerciseNumber) {
 
         exerciseService.deleteExercise(new ExerciseId(boardId, exerciseNumber));
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Aufgabe wurde gelöscht");
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Aufgabe wurde geloescht");
     }
     
 }
