@@ -1,5 +1,6 @@
 package com.exercises.exeercises.controller;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.AfterEach;
@@ -23,6 +24,7 @@ import com.exercises.exeercises.config.IntegrationTestConfig;
 import com.exercises.exeercises.model.Board;
 import com.exercises.exeercises.model.Exercise;
 import com.exercises.exeercises.model.dto.ExerciseDTO;
+import com.exercises.exeercises.model.dto.ExerciseResponseDTO;
 import com.exercises.exeercises.repository.BoardRepository;
 import com.exercises.exeercises.repository.ExerciseRepository;
 
@@ -60,8 +62,8 @@ public class ExerciseControllerTests {
 
     @AfterEach
     public void tearDown() {
-        boardRepository.deleteAll();
         exerciseRepository.deleteAll();
+        boardRepository.deleteAll();
     }
     
     @Test 
@@ -72,14 +74,18 @@ public class ExerciseControllerTests {
 
     @Test
     public void shouldFindAllExercises() {
-        client.post().uri("/exercise/add")
+        ExerciseResponseDTO exerciseResponse = client.post().uri("/exercise/add")
             .contentType(MediaType.APPLICATION_JSON)
             .body(new ExerciseDTO("Titel", "Beschreibung", boardId))
             .exchange()
             .expectStatus().isCreated()
-            .expectBody(Exercise.class)
+            .expectBody(ExerciseResponseDTO.class)
             .returnResult()
             .getResponseBody();
+        
+        assertEquals("Titel", exerciseResponse.title());
+        assertEquals("Beschreibung", exerciseResponse.description());
+        assertEquals(boardId, exerciseResponse.boardId());
     }
 
 }

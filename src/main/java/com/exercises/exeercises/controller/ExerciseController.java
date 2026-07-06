@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.exercises.exeercises.controller.mapper.ExerciseMapper;
 import com.exercises.exeercises.model.Exercise;
 import com.exercises.exeercises.model.dto.ExerciseDTO;
+import com.exercises.exeercises.model.dto.ExerciseResponseDTO;
 import com.exercises.exeercises.model.id.ExerciseId;
 import com.exercises.exeercises.service.ExerciseService;
 
@@ -28,18 +30,21 @@ public class ExerciseController {
     
     private final ExerciseService exerciseService;
 
-    ExerciseController(ExerciseService exerciseService) {
+    private final ExerciseMapper exerciseMapper;
+
+    ExerciseController(ExerciseService exerciseService, ExerciseMapper exerciseMapper) {
         this.exerciseService = exerciseService;
+        this.exerciseMapper = exerciseMapper;
     }
 
     @PostMapping(value = "/add",
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Exercise> newExercise(@RequestBody ExerciseDTO exerciseDTO) {
+    public ResponseEntity<ExerciseResponseDTO> newExercise(@RequestBody ExerciseDTO exerciseDTO) {
 
         Exercise exercise = exerciseService.saveNewExercise(exerciseDTO);
-        return new ResponseEntity<>(exercise, HttpStatus.CREATED);
+        return new ResponseEntity<>(exerciseMapper.toDto(exercise), HttpStatus.CREATED);
     }
 
     @GetMapping("/myExercises")
