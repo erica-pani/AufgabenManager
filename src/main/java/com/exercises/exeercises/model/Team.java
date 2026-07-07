@@ -37,7 +37,7 @@ public class Team {
     )
     private Set<User> member = new HashSet<>();
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "owner")
     private List<Board> boards = new ArrayList<>(); 
 
     public Long getId() {

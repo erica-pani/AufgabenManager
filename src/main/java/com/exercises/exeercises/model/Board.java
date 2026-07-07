@@ -33,7 +33,7 @@ public class Board {
 
     private Long ownerId;
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "board")
     private List<Exercise> exercises = new ArrayList<>();
 
     public Long getId() {
