@@ -22,4 +22,6 @@ public interface ExerciseRepository extends JpaRepository<Exercise, ExerciseId>{
 
     List<Exercise> findAllByBoardId(Long id);
 
+    void deleteAllByBoardId(Long id);
+
 }   
