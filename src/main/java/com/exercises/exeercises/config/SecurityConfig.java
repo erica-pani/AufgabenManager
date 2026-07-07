@@ -31,17 +31,20 @@ public class SecurityConfig {
                     request -> 
                         request
                             .requestMatchers(
+                                "/css/**",
+                                "/js/**",
+                                "/images/**",
                                 "/login",
-                                 "/login/check",
-                                  "/exercise/**")
+                                "/login/failed",
+                                "/login/check",
+                                "/exercise/**",
+                                "/user/**")
                             .permitAll()
                             .anyRequest()
                             .authenticated())
             .formLogin(
                 form -> 
-                    form.loginPage("/login")
-                        .loginProcessingUrl("/login/check")
-                        .defaultSuccessUrl("/", true)
+                    form.defaultSuccessUrl("/", true)
                         .failureUrl("/login/failed")
                         .permitAll())
             .logout(logout -> logout.logoutUrl("/logout").permitAll())

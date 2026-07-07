@@ -1,5 +1,6 @@
 package com.exercises.exeercises.service;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.exercises.exeercises.model.User;
@@ -10,9 +11,11 @@ import com.exercises.exeercises.repository.UserRepository;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder encoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder encoder) {
         this.userRepository = userRepository;
+        this.encoder = encoder;
     }
     
     public User saveNewUser(UserDTO user) {
@@ -24,7 +27,7 @@ public class UserService {
         }
         
         userToBeSaved.setUsername(user.username());
-        userToBeSaved.setPassword(user.password());
+        userToBeSaved.setPassword(encoder.encode(user.password()));
 
         return userRepository.save(userToBeSaved);
     }
