@@ -15,6 +15,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.exercises.exeercises.model.User;
 import com.exercises.exeercises.model.dto.UserDTO;
@@ -25,6 +26,9 @@ public class UserServiceTests {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private BCryptPasswordEncoder encoder;
 
     @InjectMocks
     private UserService target;
@@ -48,6 +52,7 @@ public class UserServiceTests {
 
         when(userRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
         when(userRepository.existsByUsername(validUsername)).thenReturn(false);
+        when(encoder.encode(validPassword)).thenReturn(validPassword);
 
         target.saveNewUser(user);
 
