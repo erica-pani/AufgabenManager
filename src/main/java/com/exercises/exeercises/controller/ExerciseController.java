@@ -53,14 +53,14 @@ public class ExerciseController {
         return null;
     }
 
-    @PutMapping("done/{boardId}/{exerciseNumber}")
+    @PutMapping("/done/{boardId}/{exerciseNumber}")
     public ResponseEntity<ExerciseResponseDTO> setExerciseToDone(@PathVariable Long boardId, @PathVariable Integer exerciseNumber) {
         
         Exercise exercise = exerciseService.setExerciseToDone(new ExerciseId(boardId, exerciseNumber));
         return new ResponseEntity<>(exerciseMapper.toDto(exercise), HttpStatus.OK);
     }
 
-    @PutMapping("inProgress/{boardId}/{exerciseNumber}")
+    @PutMapping("/inProgress/{boardId}/{exerciseNumber}")
     public ResponseEntity<ExerciseResponseDTO> setExerciseToInProgress(@PathVariable Long boardId, @PathVariable Integer exerciseNumber) {
         
         Exercise exercise = exerciseService.setExerciseToInProgress(new ExerciseId(boardId, exerciseNumber));

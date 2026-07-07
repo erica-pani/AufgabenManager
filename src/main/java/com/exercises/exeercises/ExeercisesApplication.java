@@ -11,3 +11,8 @@ public class ExeercisesApplication {
 	}
 
 }
+
+/*
+"username": "admin",
+"password": "meinPasswort"
+*/
