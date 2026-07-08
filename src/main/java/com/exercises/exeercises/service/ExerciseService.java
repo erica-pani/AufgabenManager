@@ -34,16 +34,22 @@ public class ExerciseService {
      */
     public Exercise saveNewExercise(ExerciseDTO exercise) {
 
-        Integer maxExerciseNumber = exerciseRepository.findMaxExerciseNumber(exercise.getBoardId()).orElse(0);
-        Board board = boardRepository.findById(exercise.getBoardId()).orElseThrow(() -> new EntityNotFoundException("board not found"));
-        ExerciseId id = new ExerciseId(exercise.getBoardId(), maxExerciseNumber + 1);
+        Integer maxExerciseNumber = exerciseRepository
+            .findMaxExerciseNumber(exercise.boardId())
+            .orElse(0);
+
+        Board board = boardRepository
+            .findById(exercise.boardId()).
+            orElseThrow(() -> new EntityNotFoundException("board not found"));
+            
+        ExerciseId id = new ExerciseId(exercise.boardId(), maxExerciseNumber + 1);
 
 
         Exercise exerciseToBeSaved = new Exercise();
         exerciseToBeSaved.setId(id);
         exerciseToBeSaved.setBoard(board);
-        exerciseToBeSaved.setTitle(exercise.getTitle());
-        exerciseToBeSaved.setDescription(exercise.getDescription());
+        exerciseToBeSaved.setTitle(exercise.title());
+        exerciseToBeSaved.setDescription(exercise.description());
         exerciseToBeSaved.setStatus(Status.TODO);
         exerciseToBeSaved.setCreationDate(LocalDate.now());
 
@@ -122,8 +128,8 @@ public class ExerciseService {
                 .findById(exerciseId)
                 .orElseThrow(() -> new EntityNotFoundException("Aufgabe nicht gefunden"));
         
-        exercise.setTitle(exerciseDTO.getTitle());
-        exercise.setDescription(exerciseDTO.getDescription());
+        exercise.setTitle(exerciseDTO.title());
+        exercise.setDescription(exerciseDTO.description());
         
         return exerciseRepository.save(exercise);
         

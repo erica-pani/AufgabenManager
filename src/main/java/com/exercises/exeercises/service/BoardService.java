@@ -8,6 +8,7 @@ import com.exercises.exeercises.model.User;
 import com.exercises.exeercises.model.dto.BoardDTO;
 import com.exercises.exeercises.model.enums.Owner;
 import com.exercises.exeercises.repository.BoardRepository;
+import com.exercises.exeercises.repository.ExerciseRepository;
 import com.exercises.exeercises.repository.TeamRepository;
 import com.exercises.exeercises.repository.UserRepository;
 
@@ -19,11 +20,13 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
     private final TeamRepository teamRepository;
+    private final ExerciseRepository exerciseRepository;
     
-    public BoardService(BoardRepository boardRepository, UserRepository userRepository, TeamRepository teamRepository) {
+    public BoardService(BoardRepository boardRepository, UserRepository userRepository, TeamRepository teamRepository, ExerciseRepository exerciseRepository) {
         this.boardRepository = boardRepository;
         this.userRepository = userRepository;
         this.teamRepository = teamRepository;
+        this.exerciseRepository = exerciseRepository;
     }
 
     /**
@@ -46,16 +49,16 @@ public class BoardService {
     public Board createNewBoard(BoardDTO boarddto) {
 
         Board boardToBeSaved = new Board();
-        boardToBeSaved.setName(boarddto.getName());
+        boardToBeSaved.setName(boarddto.name());
         boardToBeSaved.setOwner(Owner.USER);
         
-        if (!boarddto.isOwnerisUser()) {
+        if (!boarddto.ownerisUser()) {
             boardToBeSaved.setOwner(Owner.TEAM);
         }
 
         if (boardToBeSaved.getOwner() == Owner.TEAM) {
             Team team = teamRepository
-                .findById(boarddto.getOwnerId())
+                .findById(boarddto.ownerId())
                 .orElseThrow(() -> new EntityNotFoundException("Team mit dieser id existiert nicht"));
             
             team.addBoard(boardToBeSaved);
@@ -64,7 +67,7 @@ public class BoardService {
 
         if (boardToBeSaved.getOwner() == Owner.USER) {
             User user = userRepository
-                .findById(boarddto.getOwnerId())
+                .findById(boarddto.ownerId())
                 .orElseThrow(() -> new EntityNotFoundException("User mit dieser id existiert nicht"));
             
             user.addBoard(boardToBeSaved);
@@ -72,5 +75,26 @@ public class BoardService {
         }
 
         return boardRepository.save(boardToBeSaved);
+    }
+
+    public Board changeBoardName(long boardId, String newName) {
+
+        Board board = boardRepository.findById(boardId)
+            .orElseThrow(() -> new EntityNotFoundException("Board mit dieser Id wurde nicht gefunden"));
+        
+        board.setName(newName);
+
+        return boardRepository.save(board);
+    }
+
+    public void deleteBoard(Long boardId) {
+
+        if (!boardRepository.existsById(boardId)) {
+            throw new EntityNotFoundException("Board mit dieser Id existiert nicht");
+        }
+
+        exerciseRepository.deleteAllByBoardId(boardId);
+
+        boardRepository.deleteById(boardId);
     }
 }

@@ -5,6 +5,7 @@ import com.exercises.exeercises.model.enums.Owner;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -15,6 +16,12 @@ import jakarta.persistence.OneToMany;
 
 @Entity
 public class Board {
+
+    public Board() {}
+
+    public Board(Long id) {
+        this.id = id;
+    }
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
