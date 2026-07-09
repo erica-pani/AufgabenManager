@@ -20,8 +20,8 @@ public interface ExerciseRepository extends JpaRepository<Exercise, ExerciseId>{
         """)
     Optional<Integer> findMaxExerciseNumber(Long boardId);
 
-    List<Exercise> findAllByBoardId(Long id);
+    List<Exercise> findAllByIdBoardId(Long id);
 
-    void deleteAllByBoardId(Long id);
+    void deleteAllByIdBoardId(Long id);
 
 }   

@@ -97,7 +97,7 @@ public class BoardService {
             throw new EntityNotFoundException("Board mit dieser Id existiert nicht");
         }
 
-        exerciseRepository.deleteAllByBoardId(boardId);
+        exerciseRepository.deleteAllByIdBoardId(boardId);
 
         boardRepository.deleteById(boardId);
     }

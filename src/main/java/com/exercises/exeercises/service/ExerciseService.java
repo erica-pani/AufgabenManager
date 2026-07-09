@@ -58,7 +58,7 @@ public class ExerciseService {
 
     public Collection<Exercise> getExercisesByBoardId(Long boardId) {
 
-        return exerciseRepository.findAllByBoardId(boardId);
+        return exerciseRepository.findAllByIdBoardId(boardId);
     }
 
     /**

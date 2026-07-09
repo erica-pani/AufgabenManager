@@ -13,7 +13,7 @@ public interface BoardRepository extends JpaRepository<Board, Long>{
         SELECT b
         FROM Board b
         WHERE b.owner = 'USER'
-        AND b.owner_id = :userId
+        AND b.ownerId = :userId
         """)
     List<Board> findPrivateBoardsByOwnerId(Long userId);
 
@@ -21,7 +21,7 @@ public interface BoardRepository extends JpaRepository<Board, Long>{
         SELECT b
         FROM Board b
         WHERE b.owner = 'TEAM'
-        AND b.owner_id = :teamId
+        AND b.ownerId = :teamId
         """)
     List<Board> findTeamBoardsByOwnerId(Long teamId);
 }
