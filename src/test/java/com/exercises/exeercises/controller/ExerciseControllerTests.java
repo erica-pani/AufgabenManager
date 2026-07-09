@@ -2,7 +2,6 @@ package com.exercises.exeercises.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.AfterEach;
@@ -21,7 +20,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import com.exercises.exeercises.config.IntegrationTestConfig;
 import com.exercises.exeercises.model.Board;
-import com.exercises.exeercises.model.Exercise;
 import com.exercises.exeercises.model.dto.ExerciseDTO;
 import com.exercises.exeercises.model.dto.ExerciseResponseDTO;
 import com.exercises.exeercises.model.id.ExerciseId;

@@ -1,5 +1,9 @@
 package com.exercises.exeercises.service;
 
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.exercises.exeercises.model.Board;
@@ -77,7 +81,7 @@ public class BoardService {
         return boardRepository.save(boardToBeSaved);
     }
 
-    public Board changeBoardName(long boardId, String newName) {
+    public Board renameBoard(long boardId, String newName) {
 
         Board board = boardRepository.findById(boardId)
             .orElseThrow(() -> new EntityNotFoundException("Board mit dieser Id wurde nicht gefunden"));
@@ -96,5 +100,35 @@ public class BoardService {
         exerciseRepository.deleteAllByBoardId(boardId);
 
         boardRepository.deleteById(boardId);
+    }
+
+    public Collection<Board> getPrivateBoards(Long userId) {
+
+        if (!userRepository.existsById(userId)) {
+            throw new EntityNotFoundException("User mit dieser Id wurde nicht gefunden");
+        }
+
+        Collection<Board> boards = boardRepository.findPrivateBoardsByOwnerId(userId);
+
+        if (boards == null) {
+            return List.of();
+        }
+
+        return boards;
+    }
+
+    public Collection<Board> getTeamBoards(Long teamId) {
+
+        if (!teamRepository.existsById(teamId)) {
+            throw new EntityNotFoundException("User mit dieser Id wurde nicht gefunden");
+        }
+
+        Collection<Board> boards = boardRepository.findTeamBoardsByOwnerId(teamId);
+
+        if (boards == null) {
+            return List.of();
+        }
+
+        return boards;
     }
 }
