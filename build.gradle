@@ -50,7 +50,9 @@ jacocoTestReport {
 
 	afterEvaluate {
 		classDirectories.setFrom(files(classDirectories.files.collect {
-			fileTree(dir: it).exclude("com/exercises/exeercises/model/**")
+			fileTree(dir: it).exclude("com/exercises/exeercises/model/**",
+									"com/exercises/exeercises/controller/mapper")
+
 		}))
 	}
 }
@@ -61,7 +63,7 @@ jacocoTestCoverageVerification {
 			limit {
 				counter = 'LINE'
 				value = 'COVEREDRATIO'
-				minimum = 0.5
+				minimum = 0.7
 			}
 		}
 	}

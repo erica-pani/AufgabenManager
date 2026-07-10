@@ -208,6 +208,8 @@ public class ExerciseServiceTests {
         when(exerciseRepository.findAllByIdBoardId(boardId)).thenReturn(List.of());
 
         Collection<Exercise> list = target.getExercisesByBoardId(boardId);
+
+        assertEquals(0, list.size());
     }
 
 }

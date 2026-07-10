@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -25,6 +26,7 @@ import com.exercises.exeercises.model.User;
 import com.exercises.exeercises.model.dto.BoardDTO;
 import com.exercises.exeercises.model.enums.Owner;
 import com.exercises.exeercises.repository.BoardRepository;
+import com.exercises.exeercises.repository.ExerciseRepository;
 import com.exercises.exeercises.repository.TeamRepository;
 import com.exercises.exeercises.repository.UserRepository;
 
@@ -41,6 +43,9 @@ public class BoardServiceTests {
 
     @Mock
     private TeamRepository teamRepository;
+
+    @Mock
+    private ExerciseRepository exerciseRepository;
 
     @InjectMocks
     private BoardService target;
@@ -136,5 +141,55 @@ public class BoardServiceTests {
         });
         
         verify(boardRepository, never()).save(any());
+    }
+
+    @Test
+    public void renameBoardTest() {
+        Board board = new Board();
+        board.setId(boardId);
+        board.setName(boardName);
+        String newName = "neuer Name";
+
+        when(boardRepository.findById(boardId)).thenReturn(Optional.of(board));
+        when(boardRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Board savedBoard = target.renameBoard(boardId, newName);
+
+        assertEquals(newName, savedBoard.getName());
+    }
+
+    @Test
+    public void renameBoard_whenBoardNotFound() {
+
+        Board board = new Board();
+        board.setId(boardId);
+        board.setName(boardName);
+        String newName = "neuer Name";
+
+        when(boardRepository.findById(boardId)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            target.renameBoard(boardId, newName);
+        });
+    }
+
+    @Test
+    public void deleteBoardTest() {
+
+        when(boardRepository.existsById(boardId)).thenReturn(true);
+        doNothing().when(exerciseRepository).deleteAllByIdBoardId(boardId);
+        doNothing().when(boardRepository).deleteById(boardId);
+
+        target.deleteBoard(boardId);
+    }
+
+    @Test
+    public void deleteBoard_whenBoardNotFound() {
+
+        when(boardRepository.existsById(boardId)).thenReturn(false);
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            target.deleteBoard(boardId);
+        });
     }
 }
