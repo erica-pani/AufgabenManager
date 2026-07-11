@@ -6,13 +6,21 @@ import org.springframework.web.bind.annotation.RestController;
 import com.exercises.exeercises.model.User;
 import com.exercises.exeercises.model.dto.UserDTO;
 import com.exercises.exeercises.service.UserService;
+import com.exercises.exeercises.model.UserPrincipal;
 
 import jakarta.validation.Valid;
 
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -30,6 +38,17 @@ public class UserController {
 
         User user = userService.saveNewUser(userDTO);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
+    } 
+
+    @GetMapping("/me")
+    public ResponseEntity<Map<String, Object>> currentUser(@AuthenticationPrincipal UserDetails userDetails) {
+        
+        return new ResponseEntity<>(Map.of(
+            "username", userDetails.getUsername(),
+            "user_id", ((UserPrincipal) userDetails).getId()),
+            HttpStatus.ACCEPTED );
+
     }
     
+
 }
