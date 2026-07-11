@@ -15,19 +15,21 @@
         <h1>TaskManager</h1>
         <p class="subtitle">Melde dich an, um deine Boards zu verwalten.</p>
 
-        <form>
+        <form action="/login/check" method="post">
 
             <div class="input-group">
                 <label>E-Mail</label>
                 <input
-                    type="email"
-                    placeholder="name@email.de"
+                    name="username"
+                    type="text"
+                    placeholder="username"
                     required>
             </div>
 
             <div class="input-group">
                 <label>Passwort</label>
                 <input
+                    name="password"
                     type="password"
                     placeholder="••••••••"
                     required>

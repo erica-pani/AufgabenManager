@@ -7,6 +7,8 @@ import com.exercises.exeercises.model.User;
 import com.exercises.exeercises.model.dto.UserDTO;
 import com.exercises.exeercises.service.UserService;
 
+import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +26,7 @@ public class UserController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<User> newUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<User> newUser(@Valid @RequestBody UserDTO userDTO) {
 
         User user = userService.saveNewUser(userDTO);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
