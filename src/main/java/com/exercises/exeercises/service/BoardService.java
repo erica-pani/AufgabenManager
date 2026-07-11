@@ -83,14 +83,16 @@ public class BoardService {
         return boardRepository.save(boardToBeSaved);
     }
 
-    public Board renameBoard(long boardId, String newName) {
+    public BoardResponseDTO renameBoard(long boardId, String newName) {
 
         Board board = boardRepository.findById(boardId)
             .orElseThrow(() -> new EntityNotFoundException("Board mit dieser Id wurde nicht gefunden"));
         
         board.setName(newName);
 
-        return boardRepository.save(board);
+        boardRepository.save(board);
+
+        return new BoardResponseDTO(board.getId(), newName, 0);
     }
 
     public void deleteBoard(Long boardId) {
@@ -126,7 +128,7 @@ public class BoardService {
         return boardResponseDTOs;
     }
 
-    public Collection<Board> getTeamBoards(Long teamId) {
+    public Collection<BoardResponseDTO> getTeamBoards(Long teamId) {
 
         if (!teamRepository.existsById(teamId)) {
             throw new EntityNotFoundException("User mit dieser Id wurde nicht gefunden");
@@ -138,7 +140,14 @@ public class BoardService {
             return List.of();
         }
 
-        return boards;
+        Set<BoardResponseDTO> boardResponseDTOs = new HashSet<>();
+
+        for(Board board : boards) {
+            boardResponseDTOs
+                .add(new BoardResponseDTO(board.getId(), board.getName(), maxExNumber(board.getId())));
+        }
+
+        return boardResponseDTOs;
     }
 
     private Integer maxExNumber(Long boardId) {

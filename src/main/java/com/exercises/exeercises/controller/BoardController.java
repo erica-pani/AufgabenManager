@@ -14,9 +14,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PutMapping;
 
 
 
@@ -42,6 +44,27 @@ public class BoardController {
         
         Collection<BoardResponseDTO> boards = boardService.getPrivateBoards(userId);
         return new ResponseEntity<>(boards, HttpStatus.OK);
+    }
+
+    @GetMapping("/teams/{teamId}")
+    public ResponseEntity<Collection<BoardResponseDTO>> TeamBoards(@PathVariable Long teamId) {
+        
+        Collection<BoardResponseDTO> boards = boardService.getTeamBoards(teamId);
+        return new ResponseEntity<>(boards, HttpStatus.OK);
+    }
+
+    @PutMapping("/rename/{boardId}")
+    public ResponseEntity<BoardResponseDTO> renameBoard(@PathVariable Long boardId, @RequestParam String name) {
+    
+        BoardResponseDTO board = boardService.renameBoard(boardId, name);
+        return new ResponseEntity<>(board, HttpStatus.ACCEPTED);
+    }
+
+    @DeleteMapping("/delete/{boardId}")
+    public ResponseEntity<?> deleteBoard(@PathVariable Long boardId) {
+
+        boardService.deleteBoard(boardId);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
     
     

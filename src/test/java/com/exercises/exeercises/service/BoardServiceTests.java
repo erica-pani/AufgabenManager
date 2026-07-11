@@ -24,6 +24,7 @@ import com.exercises.exeercises.model.Board;
 import com.exercises.exeercises.model.Team;
 import com.exercises.exeercises.model.User;
 import com.exercises.exeercises.model.dto.BoardDTO;
+import com.exercises.exeercises.model.dto.BoardResponseDTO;
 import com.exercises.exeercises.model.enums.Owner;
 import com.exercises.exeercises.repository.BoardRepository;
 import com.exercises.exeercises.repository.ExerciseRepository;
@@ -153,9 +154,9 @@ public class BoardServiceTests {
         when(boardRepository.findById(boardId)).thenReturn(Optional.of(board));
         when(boardRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
-        Board savedBoard = target.renameBoard(boardId, newName);
+        BoardResponseDTO savedBoard = target.renameBoard(boardId, newName);
 
-        assertEquals(newName, savedBoard.getName());
+        assertEquals(newName, savedBoard.name());
     }
 
     @Test
