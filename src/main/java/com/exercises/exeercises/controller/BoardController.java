@@ -7,6 +7,8 @@ import com.exercises.exeercises.model.dto.BoardDTO;
 import com.exercises.exeercises.model.dto.BoardResponseDTO;
 import com.exercises.exeercises.service.BoardService;
 
+import jakarta.validation.Valid;
+
 import java.util.Collection;
 
 import org.springframework.http.HttpStatus;
@@ -33,7 +35,7 @@ public class BoardController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<Board> createNewBoard(@RequestBody BoardDTO boarddto) {
+    public ResponseEntity<Board> createNewBoard(@Valid @RequestBody BoardDTO boarddto) {
         
         Board board = boardService.createNewBoard(boarddto);
         return new ResponseEntity<>(board, HttpStatus.CREATED);
