@@ -1,15 +1,17 @@
 package com.exercises.exeercises.service;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.exercises.exeercises.model.Board;
 import com.exercises.exeercises.model.Team;
 import com.exercises.exeercises.model.User;
 import com.exercises.exeercises.model.dto.BoardDTO;
+import com.exercises.exeercises.model.dto.BoardResponseDTO;
 import com.exercises.exeercises.model.enums.Owner;
 import com.exercises.exeercises.repository.BoardRepository;
 import com.exercises.exeercises.repository.ExerciseRepository;
@@ -102,7 +104,7 @@ public class BoardService {
         boardRepository.deleteById(boardId);
     }
 
-    public Collection<Board> getPrivateBoards(Long userId) {
+    public Collection<BoardResponseDTO> getPrivateBoards(Long userId) {
 
         if (!userRepository.existsById(userId)) {
             throw new EntityNotFoundException("User mit dieser Id wurde nicht gefunden");
@@ -114,7 +116,14 @@ public class BoardService {
             return List.of();
         }
 
-        return boards;
+        Set<BoardResponseDTO> boardResponseDTOs = new HashSet<>();
+
+        for(Board board : boards) {
+            boardResponseDTOs
+                .add(new BoardResponseDTO(board.getId(), board.getName(), maxExNumber(board.getId())));
+        }
+
+        return boardResponseDTOs;
     }
 
     public Collection<Board> getTeamBoards(Long teamId) {
@@ -130,5 +139,13 @@ public class BoardService {
         }
 
         return boards;
+    }
+
+    private Integer maxExNumber(Long boardId) {
+
+        Integer num = exerciseRepository.findMaxExerciseNumber(boardId)
+            .orElse(0);
+
+        return num;
     }
 }

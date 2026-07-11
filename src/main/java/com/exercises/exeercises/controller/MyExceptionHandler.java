@@ -50,7 +50,7 @@ public class MyExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<?>  handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
         Map<String, Object> body = new HashMap<>();
-        body.put("error", "Violated jap contraint in record");
+        body.put("error", "Violated JPA Constraint in record");
         body.put("message", exception.getMessage());
         body.put("timestamp", LocalDateTime.now());
 
