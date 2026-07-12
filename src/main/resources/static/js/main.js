@@ -1,8 +1,14 @@
 
 const createBoardButton = document.querySelector('#create-board-button');
+const modalOverlay = document.querySelector('#modal-overlay');
+const boardCreationButton = document.querySelector('#board-creation-button');
 
 let user_id;
 let username;
+let currentTeam = user_id; // id vom aktuellen Team
+
+let privateCache = []; // cache für private borads
+let publicCache = []; //cache für public boards
 
 async function fecthData(url, method, body) {
     
@@ -56,6 +62,16 @@ async function me() {
     username = map.username;
 }
 
+function clickedIsModal(event) {
+    const clicked = event.srcElement.id;
+
+    if (clicked === "modal-overlay") {
+        return true;
+    }
+
+    return false;
+}
+
 document.addEventListener('DOMContentLoaded', async function() {
     
     await me();
@@ -69,6 +85,25 @@ document.addEventListener('DOMContentLoaded', async function() {
 }); 
 
 createBoardButton.addEventListener('click', () => {
+    modalOverlay.classList.remove('hidden');
+});
 
-    createBoard("BoardJS", true, user_id);
+modalOverlay.addEventListener('click', (event) => {
+    
+    if (clickedIsModal(event)) {
+        modalOverlay.classList.add('hidden');
+    }
+
+});
+
+boardCreationButton.addEventListener('click', () => {
+    const name = document.querySelector('input[name="board-name-input"]').value.trim();
+    let ownerIsUser = false;
+
+    if (currentTeam == user_id) {
+        ownerIsUser = true;
+    }
+
+    createBoard(name, ownerIsUser, currentTeam);
+    
 });

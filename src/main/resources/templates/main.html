@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aufgaben Manager</title>
     <link rel="stylesheet" href="/css/main.css">
+
+    <link rel="icon" type="image/png" href="/img/favicon.png">
 </head>
 <body>
 
@@ -47,6 +49,14 @@
         </header>
 
         <main>
+            <div id="modal-overlay" class="overlay hidden">
+                <div id="board-creation-card" class="board-creation">
+                    <h2>Neues Board</h2>
+                    <input type="text" name="board-name-input" placeholder="Name">
+
+                    <button id="board-creation-button" type="button">Erstellen</button>
+                </div>
+            </div>
 
             <h1>Boards</h1>
 
