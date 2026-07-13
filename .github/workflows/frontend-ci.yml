@@ -7,8 +7,10 @@ on:
     branches: [main]
     paths: 
       - 'src/main/resources/static/**'
+      - 'src/main/resources/static/package.json'
+      - 'src/main/resources/static/package-lock.json'
   schedule: 
-    - cron: "0 4 * * *"
+    - cron: "0 3 * * *"
 
 jobs: 
   tests:

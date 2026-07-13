@@ -1,15 +1,14 @@
 name: Backend CI
 
 on:
-  push:
-    branches: ['**']
-  pull_request:
-    branches: [main]
-  schedule: 
-    - cron: "0 3 * * *"
+  workflow_run:
+    workflows: ["Frontend JavaScript CI"]
+    types:
+      - completed
 
 jobs:
   build:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     steps:
