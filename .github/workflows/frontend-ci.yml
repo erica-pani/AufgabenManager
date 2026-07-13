@@ -6,7 +6,7 @@ on:
   pull_request: 
     branches: [main]
     paths: 
-      - 'src/main/resources/static/js/**'
+      - 'src/main/resources/static/**'
   schedule: 
     - cron: "0 4 * * *"
 
