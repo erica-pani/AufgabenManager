@@ -52,7 +52,7 @@ public class BoardService {
      * @throws EntityNotFoundException wenn kein Benutzer bzw. Team mit der angegebenen
      *                                 Owner-ID gefunden wird.
      */
-    public Board createNewBoard(BoardDTO boarddto) {
+    public BoardResponseDTO createNewBoard(BoardDTO boarddto) {
 
         Board boardToBeSaved = new Board();
         boardToBeSaved.setName(boarddto.name());
@@ -80,7 +80,9 @@ public class BoardService {
             boardToBeSaved.setOwnerId(user.getId());
         }
 
-        return boardRepository.save(boardToBeSaved);
+        boardRepository.save(boardToBeSaved);
+
+        return new BoardResponseDTO(boardToBeSaved.getId(), boardToBeSaved.getName(), 0);
     }
 
     public BoardResponseDTO renameBoard(long boardId, String newName) {

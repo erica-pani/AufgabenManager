@@ -35,9 +35,9 @@ public class BoardController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<Board> createNewBoard(@Valid @RequestBody BoardDTO boarddto) {
+    public ResponseEntity<BoardResponseDTO> createNewBoard(@Valid @RequestBody BoardDTO boarddto) {
         
-        Board board = boardService.createNewBoard(boarddto);
+        BoardResponseDTO board = boardService.createNewBoard(boarddto);
         return new ResponseEntity<>(board, HttpStatus.CREATED);
     }
 

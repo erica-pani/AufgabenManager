@@ -2,13 +2,14 @@
 const createBoardButton = document.querySelector('#create-board-button');
 const modalOverlay = document.querySelector('#modal-overlay');
 const boardCreationButton = document.querySelector('#board-creation-button');
+const boardList = document.querySelector('#board-list');
 
 let user_id;
 let username;
-let currentTeam = user_id; // id vom aktuellen Team
+let currentTeam; // id vom aktuellen Team
 
 let privateCache = []; // cache für private borads
-let publicCache = []; //cache für public boards
+let publicCache = {}; //cache für public boards
 
 async function fecthData(url, method, body) {
     
@@ -50,7 +51,16 @@ async function createBoard(name, ownerIsUser, ownerId) {
         return
     }
 
+    console.log(res);
+
+    cacheBoard(res);
+    renderBoard(res);
+
     console.log("erfolgreich", res);
+}
+
+function cacheBoard(board) {
+
 }
 
 async function me() {
@@ -72,9 +82,10 @@ function clickedIsModal(event) {
     return false;
 }
 
-document.addEventListener('DOMContentLoaded', async function() {
-    
+async function onAppStart() {
     await me();
+
+    currentTeam = user_id;
     
     const url = `/board/private/${user_id}`;
 
@@ -82,6 +93,28 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     console.log(boards);
 
+    boards.forEach(element => {
+        cacheBoard(element);
+        renderBoard(element);
+    });
+
+}
+
+function renderBoard(board) {
+    const newBoard = document.createElement('div');
+
+    newBoard.innerHTML = `
+        <h2>${board.name}</h2>
+        <p>${board.exerciseNumber} Aufgaben</p>
+    `;
+
+    newBoard.classList.add('board');
+
+    boardList.insertBefore(newBoard, boardList.lastElementChild);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    onAppStart();
 }); 
 
 createBoardButton.addEventListener('click', () => {
@@ -105,5 +138,7 @@ boardCreationButton.addEventListener('click', () => {
     }
 
     createBoard(name, ownerIsUser, currentTeam);
+
+    modalOverlay.classList.add('hidden');
     
 });
