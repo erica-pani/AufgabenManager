@@ -35,7 +35,7 @@ public class AuthController {
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         
-        return ResponseEntity.ok(jwtService.generateToken(userDetails));
+        return ResponseEntity.ok(jwtService.generateToken(username));
     }
     
 }
