@@ -26,7 +26,7 @@ public class AuthController {
         this.userDetailsService = userDetailsService;
     }
     
-    @PostMapping("/login/check")
+    /*@PostMapping("/login/check")
     public ResponseEntity<?> authenticate(@RequestParam String username, @RequestParam String password) {
         
         authenticationManager.authenticate(
@@ -37,5 +37,5 @@ public class AuthController {
         
         return ResponseEntity.ok(jwtService.generateToken(username));
     }
-    
+    */
 }

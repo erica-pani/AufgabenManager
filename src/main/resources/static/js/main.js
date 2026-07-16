@@ -3,6 +3,7 @@ const createBoardButton = document.querySelector('#create-board-button');
 const modalOverlay = document.querySelector('#modal-overlay');
 const boardCreationButton = document.querySelector('#board-creation-button');
 const boardList = document.querySelector('#board-list');
+const newTeamButton = document.querySelector('#new-team-button');
 
 let user_id;
 let username;
@@ -140,5 +141,9 @@ boardCreationButton.addEventListener('click', () => {
     createBoard(name, ownerIsUser, currentTeam);
 
     modalOverlay.classList.add('hidden');
+    
+});
+
+newTeamButton.addEventListener('click', () => {
     
 });

@@ -54,6 +54,10 @@ body{
     font-size:15px;
 }
 
+.team.button {
+    border: 1px solid white;
+}
+
 .team:hover{
     background:#374151;
 }
