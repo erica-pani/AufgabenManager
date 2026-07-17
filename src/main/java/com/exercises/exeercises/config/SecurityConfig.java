@@ -43,7 +43,8 @@ public class SecurityConfig {
                                 "/login/failed",
                                 "/login/check",
                                 "/user/**",
-                                "/exercise/**")
+                                "/exercise/**",
+                                "/team/**")
                             .permitAll()
                             .anyRequest()
                             .authenticated())

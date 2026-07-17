@@ -30,7 +30,7 @@ public class TeamController {
     public ResponseEntity<TeamDTO> createTeam(@RequestBody TeamDTO teamDTO) {
         Team team = teamService.saveNewTeam(teamDTO);
         return new ResponseEntity<>(new TeamDTO(team.getName(),
-             team.getMember().iterator().next().getId()), HttpStatus.CREATED);
+            team.getMember().iterator().next().getId()), HttpStatus.CREATED);
     }
 
     @PutMapping("/edit")
