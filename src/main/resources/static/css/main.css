@@ -24,6 +24,7 @@ body{
     padding:30px 20px;
     display:flex;
     flex-direction:column;
+    position: relative;
 }
 
 .sidebar h2{
@@ -55,7 +56,10 @@ body{
 }
 
 .team.button {
-    border: 1px solid white;
+    bottom: 10px;
+    position: absolute;
+    width: 90%;
+    place-self: center;
 }
 
 .team:hover{
