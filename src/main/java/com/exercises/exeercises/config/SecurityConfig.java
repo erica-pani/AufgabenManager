@@ -55,7 +55,8 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/", true)
                         .failureUrl("/login/failed")
                         .permitAll())
-            .logout(logout -> logout.logoutUrl("/logout").permitAll())
+            .rememberMe(remember -> remember.key("verifyer").tokenValiditySeconds(60 * 60 * 24 * 30))
+            .logout(logout -> logout.logoutUrl("/logout").deleteCookies("remember-me").permitAll())
             .authenticationProvider(authenticationProvider())
             .build();
     }

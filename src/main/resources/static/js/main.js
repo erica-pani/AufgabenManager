@@ -4,6 +4,7 @@ const modalOverlay = document.querySelector('#modal-overlay');
 const boardCreationButton = document.querySelector('#board-creation-button');
 const boardList = document.querySelector('#board-list');
 const newTeamButton = document.querySelector('#new-team-button');
+const teamList = document.querySelector('.team-list');
 
 let user_id;
 let username;
@@ -60,6 +61,20 @@ async function createBoard(name, ownerIsUser, ownerId) {
     console.log("erfolgreich", res);
 }
 
+async function createTeam(name) {
+    
+    const url = '/team/create'
+
+    const teamBody = {
+        name: name,
+        creatorId: user_id,
+    }
+
+    const team = await fecthData(url, 'POST', teamBody);
+
+    renderTeam(team);
+}
+
 function cacheBoard(board) {
 
 }
@@ -101,6 +116,16 @@ async function onAppStart() {
 
 }
 
+function renderTeam(team) {
+    const newTeam  = document.createElement('button');
+
+    newTeam.value = `${team.name}`;
+
+    newTeam.classList.add('team');
+
+    teamList.appendChild(newTeam);
+}
+
 function renderBoard(board) {
     const newBoard = document.createElement('div');
 
@@ -119,6 +144,8 @@ document.addEventListener('DOMContentLoaded', () => {
 }); 
 
 createBoardButton.addEventListener('click', () => {
+    document.querySelector('#card-header').textContent = "Neues Board";
+    
     modalOverlay.classList.remove('hidden');
 });
 
@@ -132,6 +159,14 @@ modalOverlay.addEventListener('click', (event) => {
 
 boardCreationButton.addEventListener('click', () => {
     const name = document.querySelector('input[name="board-name-input"]').value.trim();
+
+    if (document.querySelector('#card-header').textContent === "Neues Team") {
+        createTeam(name);
+        modalOverlay.classList.add('hidden');
+        document.querySelector('input[name="board-name-input"]').value = '';
+        return;
+    }
+
     let ownerIsUser = false;
 
     if (currentTeam == user_id) {
@@ -141,9 +176,11 @@ boardCreationButton.addEventListener('click', () => {
     createBoard(name, ownerIsUser, currentTeam);
 
     modalOverlay.classList.add('hidden');
-    
+    document.querySelector('input[name="board-name-input"]').value = '';
 });
 
 newTeamButton.addEventListener('click', () => {
-    
+    document.querySelector('#card-header').textContent = "Neues Team";
+
+    modalOverlay.classList.remove('hidden');
 });

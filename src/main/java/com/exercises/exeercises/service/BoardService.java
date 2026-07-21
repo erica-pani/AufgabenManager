@@ -82,7 +82,11 @@ public class BoardService {
 
         boardRepository.save(boardToBeSaved);
 
-        return new BoardResponseDTO(boardToBeSaved.getId(), boardToBeSaved.getName(), 0);
+        return new BoardResponseDTO(
+            boardToBeSaved.getId(),
+            boardToBeSaved.getName(),
+            0, 
+            boardToBeSaved.getOwnerId());
     }
 
     public BoardResponseDTO renameBoard(long boardId, String newName) {
@@ -94,7 +98,7 @@ public class BoardService {
 
         boardRepository.save(board);
 
-        return new BoardResponseDTO(board.getId(), newName, 0);
+        return new BoardResponseDTO(board.getId(), newName, 0, board.getOwnerId());
     }
 
     public void deleteBoard(Long boardId) {
@@ -124,7 +128,11 @@ public class BoardService {
 
         for(Board board : boards) {
             boardResponseDTOs
-                .add(new BoardResponseDTO(board.getId(), board.getName(), maxExNumber(board.getId())));
+                .add(new BoardResponseDTO(board.getId(), 
+                board.getName(), 
+                maxExNumber(board.getId()),
+                board.getOwnerId()
+            ));
         }
 
         return boardResponseDTOs;
@@ -146,7 +154,12 @@ public class BoardService {
 
         for(Board board : boards) {
             boardResponseDTOs
-                .add(new BoardResponseDTO(board.getId(), board.getName(), maxExNumber(board.getId())));
+                .add(new BoardResponseDTO(
+                    board.getId(),
+                    board.getName(), 
+                    maxExNumber(board.getId()),
+                    board.getOwnerId()
+                ));
         }
 
         return boardResponseDTOs;
