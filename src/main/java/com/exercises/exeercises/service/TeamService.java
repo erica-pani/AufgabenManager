@@ -1,6 +1,8 @@
 package com.exercises.exeercises.service;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -58,6 +60,22 @@ public class TeamService {
         }
 
         teamRepository.deleteById(teamId);
+    }
+
+    public Collection<TeamDTO> myTeams(long userId) {
+
+        if (!userRepository.existsById(userId)) {
+            throw new IllegalArgumentException("User existiert nicht. Teams können nicht gefunden werden");
+        }
+
+        Set<Team> teams = userRepository.findById(userId).get().getTeams();
+        Set<TeamDTO> teamdtos = new HashSet<>();
+
+        for (Team team : teams) {
+            teamdtos.add(new TeamDTO(team.getId(), team.getName(), null));
+        }
+
+        return teamdtos;
     }
 
 }

@@ -8,7 +8,7 @@ const teamList = document.querySelector('.team-list');
 
 let user_id;
 let username;
-let currentTeam; // id vom aktuellen Team
+let currentTeam = null; // id vom aktuellen Team
 
 let privateCache = []; // cache für private borads
 let publicCache = {}; //cache für public boards
@@ -46,6 +46,10 @@ async function createBoard(name, ownerIsUser, ownerId) {
         ownerId: ownerId,
     };
 
+    if (ownerIsUser) {
+        currentTeam = null;
+    }
+
     const res = await fecthData(url, 'POST', board);
 
     if (!res) {
@@ -59,6 +63,18 @@ async function createBoard(name, ownerIsUser, ownerId) {
     renderBoard(res);
 
     console.log("erfolgreich", res);
+}
+
+async function fetchTeams() {
+    const url = `/team/teams?userId=${user_id}`;
+
+    const teams = await fecthData(url, 'GET', null);
+
+    console.log(teams);
+
+    teams.forEach(team => {
+        renderTeam(team);
+    });
 }
 
 async function createTeam(name) {
@@ -98,13 +114,15 @@ function clickedIsModal(event) {
     return false;
 }
 
-async function onAppStart() {
-    await me();
+//true wenn User false wenn Team
+async function fetchBoards(userOrTeams) {
 
-    currentTeam = user_id;
+    let url = `/board/teams/${currentTeam}`;
+
+    if (userOrTeams) {
+        url = `/board/private/${user_id}`;
+    }
     
-    const url = `/board/private/${user_id}`;
-
     let boards = await fecthData(url, 'GET', null);
 
     console.log(boards);
@@ -113,15 +131,38 @@ async function onAppStart() {
         cacheBoard(element);
         renderBoard(element);
     });
+}
 
+async function changeTeam(clicked) {
+    document.querySelector('.active').classList.remove('active');
+    clicked.classList.add('active');
+    currentTeam = clicked['teamId'];
+
+    boardList.innerHTML = '';
+
+    boards = await fetchBoards(false);
+}
+
+async function onAppStart() {
+    await me();
+    await fetchTeams();
+    await fetchBoards(true);
 }
 
 function renderTeam(team) {
     const newTeam  = document.createElement('button');
 
-    newTeam.value = `${team.name}`;
-
+    newTeam.textContent = `${team.name}`;
     newTeam.classList.add('team');
+
+    Object.defineProperty(newTeam, 'teamId', {
+        value: team.teamId,
+        writable: false,
+        configurable: false,
+        enumerable: true
+    });
+
+    console.log(newTeam['teamId']);
 
     teamList.appendChild(newTeam);
 }
@@ -169,8 +210,9 @@ boardCreationButton.addEventListener('click', () => {
 
     let ownerIsUser = false;
 
-    if (currentTeam == user_id) {
+    if (!currentTeam) {
         ownerIsUser = true;
+        currentTeam = user_id;
     }
 
     createBoard(name, ownerIsUser, currentTeam);
@@ -183,4 +225,11 @@ newTeamButton.addEventListener('click', () => {
     document.querySelector('#card-header').textContent = "Neues Team";
 
     modalOverlay.classList.remove('hidden');
+});
+
+teamList.addEventListener('click', (event) => {
+    const clicked = event.target.closest('.team');
+    if (!clicked) return;
+
+    changeTeam(clicked);
 });
