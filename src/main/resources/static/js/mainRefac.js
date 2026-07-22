@@ -1,4 +1,15 @@
 
+const BASE_URL = ''; // Falls Backend auf gleichem Server läuft. Sonst z.B. 'http://localhost:8080'
+
+const ENDPOINTS = {
+    USER_ME: `${BASE_URL}/user/me`,
+    BOARD_NEW: `${BASE_URL}/board/new`,
+    BOARD_PRIVATE: (userId) => `${BASE_URL}/board/private/${userId}`,
+    BOARD_TEAM: (teamId) => `${BASE_URL}/board/teams/${teamId}`,
+    TEAM_TEAMS: (userId) => `${BASE_URL}/team/teams?userId=${userId}`,
+    TEAM_CREATE: `${BASE_URL}/team/create`,
+};
+
 const createBoardButton = document.querySelector('#create-board-button');
 const modalOverlay = document.querySelector('#modal-overlay');
 const boardCreationButton = document.querySelector('#board-creation-button');
@@ -10,15 +21,15 @@ let user_id;
 let username;
 let currentTeam = null; // id vom aktuellen Team
 
-let privateCache = []; // cache für private borads
-let publicCache = {}; //cache für public boards
+let privateCache = []; // cache für private boards
+let publicCache = {};  // cache für public boards
 
-async function fecthData(url, method, body) {
-    
+
+async function fetchData(url, method, body) {
     const fetchInfo = {
         method: method,
-        headers: {'Content-Type': "application/json"},
-    }
+        headers: { 'Content-Type': "application/json" },
+    };
 
     if (body) {
         fetchInfo.body = JSON.stringify(body);
@@ -27,7 +38,7 @@ async function fecthData(url, method, body) {
     const res = await fetch(url, fetchInfo);
 
     if (!res.ok) {
-        const errorText = await res.text(); 
+        const errorText = await res.text();
         console.error("Fetch error:", res.status, errorText);
         return null;
     }
@@ -36,17 +47,15 @@ async function fecthData(url, method, body) {
 }
 
 async function me() {
-    const url = '/user/me';
+    let map = await fetchData(ENDPOINTS.USER_ME, 'GET', null);
 
-    let map = await fecthData(url, 'GET', null);
-
-    user_id = map.user_id;
-    username = map.username;
+    if (map) {
+        user_id = map.user_id;
+        username = map.username;
+    }
 }
 
 async function createBoard(name, ownerIsUser, ownerId) {
-    const url = '/board/new';
-
     const board = {
         name: name,
         ownerisUser: ownerIsUser,
@@ -57,98 +66,94 @@ async function createBoard(name, ownerIsUser, ownerId) {
         currentTeam = null;
     }
 
-    const res = await fecthData(url, 'POST', board);
+    const res = await fetchData(ENDPOINTS.BOARD_NEW, 'POST', board);
 
     if (!res) {
-        console.log("Probleme beim erstellen eines Boards");
-        return
+        console.log("Probleme beim Erstellen eines Boards");
+        return;
     }
-
-    console.log(res);
 
     cacheBoard(res);
     renderBoard(res);
-
-    console.log("erfolgreich", res);
+    console.log("Erfolgreich erstellt:", res);
 }
 
 async function fetchTeams() {
-    const url = `/team/teams?userId=${user_id}`;
+    const teams = await fetchData(ENDPOINTS.TEAM_TEAMS(user_id), 'GET', null);
 
-    const teams = await fecthData(url, 'GET', null);
-
-    console.log(teams);
-
-    teams.forEach(team => {
-        renderTeam(team);
-    });
+    if (teams && Array.isArray(teams)) {
+        teams.forEach(team => {
+            renderTeam(team);
+        });
+    }
 }
 
 async function createTeam(name) {
-    
-    const url = '/team/create'
-
     const teamBody = {
         name: name,
         creatorId: user_id,
+    };
+
+    const team = await fetchData(ENDPOINTS.TEAM_CREATE, 'POST', teamBody);
+
+    if (team) {
+        renderTeam(team);
     }
-
-    const team = await fecthData(url, 'POST', teamBody);
-
-    renderTeam(team);
 }
 
-function cacheBoard(board) {
+// true wenn User, false wenn Team
+async function fetchBoards(userOrTeams) {
+    const url = userOrTeams 
+        ? ENDPOINTS.BOARD_PRIVATE(user_id) 
+        : ENDPOINTS.BOARD_TEAM(currentTeam);
 
+    let boards = await fetchData(url, 'GET', null);
+
+    if (boards && Array.isArray(boards)) {
+        boards.forEach(element => {
+            cacheBoard(element);
+            renderBoard(element);
+        });
+    }
+}
+
+
+function cacheBoard(board) {
+    // Hier deinen Caching-Code einfügen
 }
 
 function clickedIsModal(event) {
-    const clicked = event.srcElement.id;
-
-    if (clicked === "modal-overlay") {
-        return true;
-    }
-
-    return false;
+    return event.srcElement.id === "modal-overlay";
 }
 
-//true wenn User false wenn Team
-async function fetchBoards(userOrTeams) {
+async function changeToPrivate() {
+    currentTeam = null;
 
-    let url = `/board/teams/${currentTeam}`;
-
-    if (userOrTeams) {
-        url = `/board/private/${user_id}`;
-    }
-    
-    let boards = await fecthData(url, 'GET', null);
-
-    console.log(boards);
-
-    boards.forEach(element => {
-        cacheBoard(element);
-        renderBoard(element);
-    });
-}
-
-async function changeTeam(clicked) {
-    document.querySelector('.active').classList.remove('active');
-    clicked.classList.add('active');
-    currentTeam = clicked['teamId'];
-
-    boardList.innerHTML = '';
-
-    boards = await fetchBoards(false);
-}
-
-async function onAppStart() {
-    await me();
-    await fetchTeams();
     await fetchBoards(true);
 }
 
+async function changeTeam(clicked) {
+    const activeItem = document.querySelector('.active');
+    if (activeItem) {
+        activeItem.classList.remove('active');
+    }
+    clicked.classList.add('active');
+
+    boardList.querySelectorAll(':scope > *:not(:last-child)')
+        .forEach(el => el.remove());
+
+    if (clicked.id === "private") {
+        await changeToPrivate();
+        return;
+    }
+
+    currentTeam = clicked['teamId'];
+
+    await fetchBoards(false);
+}
+
 function renderTeam(team) {
-    const newTeam  = document.createElement('button');
+    const newTeam = document.createElement('button');
 
     newTeam.textContent = `${team.name}`;
     newTeam.classList.add('team');
@@ -160,8 +165,6 @@ function renderTeam(team) {
         enumerable: true
     });
 
-    console.log(newTeam['teamId']);
-
     teamList.appendChild(newTeam);
 }
 
@@ -170,39 +173,43 @@ function renderBoard(board) {
 
     newBoard.innerHTML = `
         <h2>${board.name}</h2>
-        <p>${board.exerciseNumber} Aufgaben</p>
+        <p>${board.exerciseNumber || 0} Aufgaben</p>
     `;
 
     newBoard.classList.add('board');
-
     boardList.insertBefore(newBoard, boardList.lastElementChild);
 }
 
+async function onAppStart() {
+    await me();
+    await fetchTeams();
+    await fetchBoards(true);
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
     onAppStart();
-}); 
+});
 
 createBoardButton.addEventListener('click', () => {
     document.querySelector('#card-header').textContent = "Neues Board";
-    
     modalOverlay.classList.remove('hidden');
 });
 
 modalOverlay.addEventListener('click', (event) => {
-    
     if (clickedIsModal(event)) {
         modalOverlay.classList.add('hidden');
     }
-
 });
 
 boardCreationButton.addEventListener('click', () => {
-    const name = document.querySelector('input[name="board-name-input"]').value.trim();
+    const nameInput = document.querySelector('input[name="board-name-input"]');
+    const name = nameInput.value.trim();
 
     if (document.querySelector('#card-header').textContent === "Neues Team") {
         createTeam(name);
         modalOverlay.classList.add('hidden');
-        document.querySelector('input[name="board-name-input"]').value = '';
+        nameInput.value = '';
         return;
     }
 
@@ -216,12 +223,11 @@ boardCreationButton.addEventListener('click', () => {
     createBoard(name, ownerIsUser, currentTeam);
 
     modalOverlay.classList.add('hidden');
-    document.querySelector('input[name="board-name-input"]').value = '';
+    nameInput.value = '';
 });
 
 newTeamButton.addEventListener('click', () => {
     document.querySelector('#card-header').textContent = "Neues Team";
-
     modalOverlay.classList.remove('hidden');
 });
 
@@ -229,5 +235,10 @@ teamList.addEventListener('click', (event) => {
     const clicked = event.target.closest('.team');
     if (!clicked) return;
 
+    changeTeam(clicked);
+});
+
+document.querySelector('#private').addEventListener('click', (event) =>{
+    const clicked = event.target.closest('.team');
     changeTeam(clicked);
 });
