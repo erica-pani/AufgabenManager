@@ -26,7 +26,7 @@ let privateCache = []; // cache für private boards
 let publicCache = {};  // cache für public boards
 
 
-async function fetchData(url, method, body) {
+export async function fetchData(url, method, body) {
     const fetchInfo = {
         method: method,
         headers: { 'Content-Type': "application/json" },
@@ -79,7 +79,7 @@ async function createBoard(name, ownerIsUser, ownerId) {
     console.log("Erfolgreich erstellt:", res);
 }
 
-async function fetchTeams() {
+export async function fetchTeams() {
     const teams = await fetchData(ENDPOINTS.TEAM_TEAMS(user_id), 'GET', null);
 
     if (teams && Array.isArray(teams)) {
@@ -203,7 +203,7 @@ async function changeTeam(clicked) {
     await fetchBoards(false);
 }
 
-function renderTeam(team) {
+export function renderTeam(team) {
     const newTeam = document.createElement('button');
 
     newTeam.textContent = `${team.name}`;
