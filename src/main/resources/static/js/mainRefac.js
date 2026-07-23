@@ -8,6 +8,7 @@ const ENDPOINTS = {
     BOARD_TEAM: (teamId) => `${BASE_URL}/board/teams/${teamId}`,
     TEAM_TEAMS: (userId) => `${BASE_URL}/team/teams?userId=${userId}`,
     TEAM_CREATE: `${BASE_URL}/team/create`,
+    BOARD_UI: (boardName, boardId) => `${BASE_URL}/${boardName}?bid=${boardId}`
 };
 
 const createBoardButton = document.querySelector('#create-board-button');
@@ -226,6 +227,13 @@ function renderBoard(board) {
         <p>${board.exerciseNumber || 0} Aufgaben</p>
     `;
 
+    Object.defineProperty(newBoard, 'boardId', {
+        value: board.boardId,
+        writable: false,
+        configurable: false,
+        enumerable: true
+    });
+
     newBoard.classList.add('board');
     boardList.insertBefore(newBoard, boardList.lastElementChild);
 }
@@ -295,4 +303,12 @@ document.querySelector('#private').addEventListener('click', (event) =>{
 
     console.log(privateCache);
     console.log(publicCache);
+});
+
+boardList.addEventListener('click', (event) => {
+    const clicked = event.target.closest('.board');
+    if (!clicked) return;
+    let boardId = clicked['boardId'];
+    let boardName = clicked.querySelector('h2').textContent;
+    location.href = ENDPOINTS.BOARD_UI(boardName, boardId);
 });
