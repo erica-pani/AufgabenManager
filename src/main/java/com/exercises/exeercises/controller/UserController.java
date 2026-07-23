@@ -41,13 +41,10 @@ public class UserController {
 
     @GetMapping("/me")
     public ResponseEntity<Map<String, Object>> currentUser(@AuthenticationPrincipal UserDetails userDetails) {
-        
         return new ResponseEntity<>(Map.of(
             "username", userDetails.getUsername(),
             "user_id", ((UserPrincipal) userDetails).getId()),
             HttpStatus.ACCEPTED );
-
     }
-    
 
 }
