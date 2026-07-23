@@ -23,5 +23,5 @@ public class UIController {
     public String board() {
         return "board";
     }
-    
+
 }

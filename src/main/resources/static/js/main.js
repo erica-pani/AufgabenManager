@@ -9,7 +9,7 @@ let user_id;
 let username;
 let currentTeam; // id vom aktuellen Team
 
-let privateCache = []; // cache für private borads
+const privateCache = []; // cache für private borads
 let publicCache = {}; //cache für public boards
 
 async function fecthData(url, method, body) {
@@ -61,7 +61,22 @@ async function createBoard(name, ownerIsUser, ownerId) {
 }
 
 function cacheBoard(board) {
+    /*
+    if (board.ownerId === user_id) {
+        if(!privateCache.includes(board)) {
+        privateCache.push(board);
+        return;
+    }
 
+    const ownerId = board.ownerId;
+
+    publicCache[ownerId] ||= [];
+
+    if(!publicCache[ownerId].includes(board)) {
+        publicCache[ownerId].push(board);
+    }
+
+    `*/
 }
 
 async function me() {
@@ -98,6 +113,8 @@ async function onAppStart() {
         cacheBoard(element);
         renderBoard(element);
     });
+
+    console.log(privateCache);
 
 }
 
