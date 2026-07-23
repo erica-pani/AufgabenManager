@@ -109,17 +109,46 @@ async function fetchBoards(userOrTeams) {
 
     let boards = await fetchData(url, 'GET', null);
 
+    boardList.querySelectorAll(':scope > *:not(:last-child)')
+        .forEach(el => el.remove());
+
     if (boards && Array.isArray(boards)) {
         boards.forEach(element => {
-            cacheBoard(element);
             renderBoard(element);
         });
     }
+
+    if(userOrTeams) {
+        privateCache = boards;
+        return;
+    }
+
+    cacheBoards(boards);
 }
 
 
-function cacheBoard(board) {
-    // Hier deinen Caching-Code einfügen
+function cacheBoards(boards) {
+
+    if (!publicCache[currentTeam]) {
+        publicCache[currentTeam] = [];
+    }
+
+    publicCache[currentTeam] = boards;
+    /*
+    if (board.ownerId === user_id) {
+        if(!privateCache.includes(board)) {
+        privateCache.push(board);
+        return;
+    }
+
+    const ownerId = board.ownerId;
+
+    publicCache[ownerId] ||= [];
+
+    if(!publicCache[ownerId].includes(board)) {
+        publicCache[ownerId].push(board);
+    }
+    */
 }
 
 function clickedIsModal(event) {
@@ -128,6 +157,10 @@ function clickedIsModal(event) {
 
 async function changeToPrivate() {
     currentTeam = null;
+
+    privateCache.forEach(board => {
+        renderBoard(board);
+    });
 
     await fetchBoards(true);
 }
@@ -148,6 +181,10 @@ async function changeTeam(clicked) {
     }
 
     currentTeam = clicked['teamId'];
+
+    (publicCache[currentTeam] || []).forEach(board => {
+        renderBoard(board);
+    });
 
     await fetchBoards(false);
 }
@@ -214,13 +251,14 @@ boardCreationButton.addEventListener('click', () => {
     }
 
     let ownerIsUser = false;
+    let ownerId = currentTeam;
 
     if (!currentTeam) {
         ownerIsUser = true;
-        currentTeam = user_id;
+        ownerId = user_id;
     }
 
-    createBoard(name, ownerIsUser, currentTeam);
+    createBoard(name, ownerIsUser, ownerId);
 
     modalOverlay.classList.add('hidden');
     nameInput.value = '';
@@ -241,4 +279,7 @@ teamList.addEventListener('click', (event) => {
 document.querySelector('#private').addEventListener('click', (event) =>{
     const clicked = event.target.closest('.team');
     changeTeam(clicked);
+
+    console.log(privateCache);
+    console.log(publicCache);
 });
