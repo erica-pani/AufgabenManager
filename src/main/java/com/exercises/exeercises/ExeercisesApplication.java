@@ -15,4 +15,8 @@ public class ExeercisesApplication {
 /*
 "username": "admin",
 "password": "meinPasswort"
+
+
+"username": "lehrer",
+"password": "schueler1"
 */

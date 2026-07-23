@@ -24,6 +24,7 @@ body{
     padding:30px 20px;
     display:flex;
     flex-direction:column;
+    position: relative;
 }
 
 .sidebar h2{
@@ -52,6 +53,13 @@ body{
     cursor:pointer;
     transition:.2s;
     font-size:15px;
+}
+
+.team.button {
+    bottom: 10px;
+    position: absolute;
+    width: 90%;
+    place-self: center;
 }
 
 .team:hover{
@@ -191,6 +199,77 @@ main h1{
 
     color:#2563eb;
 
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); 
+    z-index: 999;           
+}
+
+.board-creation {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 200px;
+    width: 400px;
+    background-color: white;
+    border-radius: 30px;
+    box-shadow:
+        0 8px 20px rgba(0,0,0,.08);
+    z-index: 1000;
+}
+
+.board-creation .hidden {
+    display: none !important;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.board-creation h2{
+
+}
+
+.board-creation input{
+    width: 250px;
+    height: 35px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    margin: 20px 0;
+    padding: 14px;
+}
+
+.board-creation input:focus {
+    outline: black;
+}
+
+.board-creation button{
+    height: 40px;
+    width: 150px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    background-color: #2563eb;
+    color: white;
+}
+
+.board-creation button:hover {
+    background-color: #1f54c7;
+}
+
+.board-creation button:active {
+    scale: 0.98;
 }
 
 /* Responsive */

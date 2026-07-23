@@ -1,9 +1,12 @@
 package com.exercises.exeercises.model.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public record BoardDTO(
-    String name,
+    @NotBlank String name,
     boolean ownerisUser,
-    Long ownerId) {
+    @NotNull Long ownerId) {
 } 
     
     

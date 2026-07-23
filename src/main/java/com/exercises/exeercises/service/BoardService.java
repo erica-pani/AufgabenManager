@@ -1,11 +1,17 @@
 package com.exercises.exeercises.service;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.springframework.stereotype.Service;
 
 import com.exercises.exeercises.model.Board;
 import com.exercises.exeercises.model.Team;
 import com.exercises.exeercises.model.User;
 import com.exercises.exeercises.model.dto.BoardDTO;
+import com.exercises.exeercises.model.dto.BoardResponseDTO;
 import com.exercises.exeercises.model.enums.Owner;
 import com.exercises.exeercises.repository.BoardRepository;
 import com.exercises.exeercises.repository.ExerciseRepository;
@@ -46,7 +52,7 @@ public class BoardService {
      * @throws EntityNotFoundException wenn kein Benutzer bzw. Team mit der angegebenen
      *                                 Owner-ID gefunden wird.
      */
-    public Board createNewBoard(BoardDTO boarddto) {
+    public BoardResponseDTO createNewBoard(BoardDTO boarddto) {
 
         Board boardToBeSaved = new Board();
         boardToBeSaved.setName(boarddto.name());
@@ -74,17 +80,25 @@ public class BoardService {
             boardToBeSaved.setOwnerId(user.getId());
         }
 
-        return boardRepository.save(boardToBeSaved);
+        boardRepository.save(boardToBeSaved);
+
+        return new BoardResponseDTO(
+            boardToBeSaved.getId(),
+            boardToBeSaved.getName(),
+            0, 
+            boardToBeSaved.getOwnerId());
     }
 
-    public Board changeBoardName(long boardId, String newName) {
+    public BoardResponseDTO renameBoard(long boardId, String newName) {
 
         Board board = boardRepository.findById(boardId)
             .orElseThrow(() -> new EntityNotFoundException("Board mit dieser Id wurde nicht gefunden"));
         
         board.setName(newName);
 
-        return boardRepository.save(board);
+        boardRepository.save(board);
+
+        return new BoardResponseDTO(board.getId(), newName, 0, board.getOwnerId());
     }
 
     public void deleteBoard(Long boardId) {
@@ -93,8 +107,69 @@ public class BoardService {
             throw new EntityNotFoundException("Board mit dieser Id existiert nicht");
         }
 
-        exerciseRepository.deleteAllByBoardId(boardId);
+        exerciseRepository.deleteAllByIdBoardId(boardId);
 
         boardRepository.deleteById(boardId);
+    }
+
+    public Collection<BoardResponseDTO> getPrivateBoards(Long userId) {
+
+        if (!userRepository.existsById(userId)) {
+            throw new EntityNotFoundException("User mit dieser Id wurde nicht gefunden");
+        }
+
+        Collection<Board> boards = boardRepository.findPrivateBoardsByOwnerId(userId);
+
+        if (boards == null) {
+            return List.of();
+        }
+
+        Set<BoardResponseDTO> boardResponseDTOs = new HashSet<>();
+
+        for(Board board : boards) {
+            boardResponseDTOs
+                .add(new BoardResponseDTO(board.getId(), 
+                board.getName(), 
+                maxExNumber(board.getId()),
+                board.getOwnerId()
+            ));
+        }
+
+        return boardResponseDTOs;
+    }
+
+    public Collection<BoardResponseDTO> getTeamBoards(Long teamId) {
+
+        if (!teamRepository.existsById(teamId)) {
+            throw new EntityNotFoundException("User mit dieser Id wurde nicht gefunden");
+        }
+
+        Collection<Board> boards = boardRepository.findTeamBoardsByOwnerId(teamId);
+
+        if (boards == null) {
+            return List.of();
+        }
+
+        Set<BoardResponseDTO> boardResponseDTOs = new HashSet<>();
+
+        for(Board board : boards) {
+            boardResponseDTOs
+                .add(new BoardResponseDTO(
+                    board.getId(),
+                    board.getName(), 
+                    maxExNumber(board.getId()),
+                    board.getOwnerId()
+                ));
+        }
+
+        return boardResponseDTOs;
+    }
+
+    private Integer maxExNumber(Long boardId) {
+
+        Integer num = exerciseRepository.findMaxExerciseNumber(boardId)
+            .orElse(0);
+
+        return num;
     }
 }

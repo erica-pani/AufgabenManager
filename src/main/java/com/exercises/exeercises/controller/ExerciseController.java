@@ -47,10 +47,11 @@ public class ExerciseController {
         return new ResponseEntity<>(exerciseMapper.toDto(exercise), HttpStatus.CREATED);
     }
 
-    @GetMapping("/myExercises")
-    public ResponseEntity<Collection<Exercise>> getExercises() {
+    @GetMapping("{boardId}")
+    public ResponseEntity<Collection<Exercise>> getExercises(@PathVariable Long boardId) {
 
-        return null;
+        Collection<Exercise> exercises = exerciseService.getExercisesByBoardId(boardId);
+        return new ResponseEntity<>(exercises, HttpStatus.ACCEPTED);
     }
 
     @PutMapping("/done/{boardId}/{exerciseNumber}")

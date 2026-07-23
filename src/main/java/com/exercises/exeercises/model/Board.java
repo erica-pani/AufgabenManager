@@ -5,7 +5,6 @@ import com.exercises.exeercises.model.enums.Owner;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

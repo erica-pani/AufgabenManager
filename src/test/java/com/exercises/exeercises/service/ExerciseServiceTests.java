@@ -9,6 +9,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -196,6 +198,18 @@ public class ExerciseServiceTests {
         });
 
         verify(exerciseRepository, never()).save(any());
+    }
+
+    @Test
+    public void getExerciseByBoardIdTest() {
+
+        Long boardId = 1242L;
+
+        when(exerciseRepository.findAllByIdBoardId(boardId)).thenReturn(List.of());
+
+        Collection<Exercise> list = target.getExercisesByBoardId(boardId);
+
+        assertEquals(0, list.size());
     }
 
 }
