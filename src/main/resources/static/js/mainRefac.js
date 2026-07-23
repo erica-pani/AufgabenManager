@@ -123,11 +123,11 @@ async function fetchBoards(userOrTeams) {
         return;
     }
 
-    cacheBoards(boards);
+    cacheAllBoards(boards);
 }
 
 
-function cacheBoards(boards) {
+function cacheAllBoards(boards) {
 
     if (!publicCache[currentTeam]) {
         publicCache[currentTeam] = [];
@@ -149,6 +149,19 @@ function cacheBoards(boards) {
         publicCache[ownerId].push(board);
     }
     */
+}
+
+function cacheBoard(board) {
+    if (!currentTeam) {
+        privateCache.push(board);
+        return;
+    }
+
+    if (!publicCache[board.ownerId]) {
+        publicCache[board.ownerId] = []
+    }
+
+    publicCache[board.ownerId].push(board);
 }
 
 function clickedIsModal(event) {
