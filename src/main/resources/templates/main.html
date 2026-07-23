@@ -17,21 +17,18 @@
 
         <h2>TaskManager</h2>
 
-        <button class="team active">
+        <button id="private" class="team active">
             🏠 Privat
         </button>
 
         <h3>Teams</h3>
 
         <div class="team-list">
-            <button class="team">👨‍💻 Entwickler</button>
-            <button class="team">🎨 Design</button>
-            <button class="team">📈 Marketing</button>
-            <button class="team">💼 Management</button>
-            <button id="new-team-button" class="team button">+ Neues Team</button>
+            
         </div>
-
+        <div id="new-team-button" class="team button">+ Neues Team</div>
     </aside>
+    
 
     <!-- Hauptbereich -->
     <div class="content">
@@ -52,7 +49,7 @@
         <main>
             <div id="modal-overlay" class="overlay hidden">
                 <div id="board-creation-card" class="board-creation">
-                    <h2>Neues Board</h2>
+                    <h2 id="card-header">Neues Board</h2>
                     <input type="text" name="board-name-input" placeholder="Name">
 
                     <button id="board-creation-button" type="button">Erstellen</button>
@@ -62,26 +59,6 @@
             <h1>Boards</h1>
 
             <section id="board-list" class="boards">
-
-                <div class="board">
-                    <h2>Projekt Alpha</h2>
-                    <p>12 Aufgaben</p>
-                </div>
-
-                <div class="board">
-                    <h2>Website</h2>
-                    <p>8 Aufgaben</p>
-                </div>
-
-                <div class="board">
-                    <h2>Backend</h2>
-                    <p>20 Aufgaben</p>
-                </div>
-
-                <div class="board">
-                    <h2>App</h2>
-                    <p>4 Aufgaben</p>
-                </div>
 
                 <div id="create-board-button" class="board add-board">
                     <span>＋</span>
@@ -96,6 +73,6 @@
 
 </div>
 
-<script src="/js/main.js"></script>
+<script src="/js/mainRefac.js"></script>
 </body>
 </html>

@@ -2,7 +2,6 @@ package com.exercises.exeercises.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.exercises.exeercises.model.Board;
 import com.exercises.exeercises.model.dto.BoardDTO;
 import com.exercises.exeercises.model.dto.BoardResponseDTO;
 import com.exercises.exeercises.service.BoardService;
