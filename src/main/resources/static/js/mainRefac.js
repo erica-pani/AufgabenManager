@@ -5,8 +5,8 @@ const ENDPOINTS = {
     USER_ME: `${BASE_URL}/user/me`,
     BOARD_NEW: `${BASE_URL}/board/new`,
     BOARD_PRIVATE: (userId) => `${BASE_URL}/board/private/${userId}`,
-    BOARD_TEAM: (teamId) => `${BASE_URL}/board/teams/${teamId}`,
-    TEAM_TEAMS: (userId) => `${BASE_URL}/team/teams?userId=${userId}`,
+    BOARD_TEAM: `${BASE_URL}/board/teams`,
+    TEAM_TEAMS: `${BASE_URL}/team/teams`,
     TEAM_CREATE: `${BASE_URL}/team/create`,
     BOARD_UI: (boardName, boardId) => `${BASE_URL}/${boardName}?bid=${boardId}`
 };
@@ -80,7 +80,7 @@ async function createBoard(name, ownerIsUser, ownerId) {
 }
 
 export async function fetchTeams() {
-    const teams = await fetchData(ENDPOINTS.TEAM_TEAMS(user_id), 'GET', null);
+    const teams = await fetchData(ENDPOINTS.TEAM_TEAMS, 'GET', null);
 
     if (teams && Array.isArray(teams)) {
         teams.forEach(team => {
@@ -238,6 +238,13 @@ function renderBoard(board) {
     boardList.insertBefore(newBoard, boardList.lastElementChild);
 }
 
+function saveToCache() {
+  sessionStorage.setItem('user_id', user_id);
+  sessionStorage.setItem('username', username);
+  sessionStorage.setItem('privateCache', JSON.stringify(privateCache));
+  sessionStorage.setItem('publicCache', JSON.stringify(publicCache));
+}
+
 async function onAppStart() {
     await me();
     await fetchTeams();
@@ -310,5 +317,6 @@ boardList.addEventListener('click', (event) => {
     if (!clicked) return;
     let boardId = clicked['boardId'];
     let boardName = clicked.querySelector('h2').textContent;
+    saveToCache();
     location.href = ENDPOINTS.BOARD_UI(boardName, boardId);
 });
