@@ -5,7 +5,7 @@ const ENDPOINTS = {
     USER_ME: `${BASE_URL}/user/me`,
     BOARD_NEW: `${BASE_URL}/board/new`,
     BOARD_PRIVATE: (userId) => `${BASE_URL}/board/private/${userId}`,
-    BOARD_TEAM: `${BASE_URL}/board/teams`,
+    BOARD_TEAM: (teamId) => `${BASE_URL}/board/teams/${teamId}`,
     TEAM_TEAMS: `${BASE_URL}/team/teams`,
     TEAM_CREATE: `${BASE_URL}/team/create`,
     BOARD_UI: (boardName, boardId) => `${BASE_URL}/${boardName}?bid=${boardId}`
@@ -234,7 +234,7 @@ function renderBoard(board) {
         enumerable: true
     });
 
-    newBoard.classList.add('board');
+    newBoard.classList.add('board-card');
     boardList.insertBefore(newBoard, boardList.lastElementChild);
 }
 
@@ -313,7 +313,7 @@ document.querySelector('#private').addEventListener('click', (event) =>{
 });
 
 boardList.addEventListener('click', (event) => {
-    const clicked = event.target.closest('.board');
+    const clicked = event.target.closest('.board-card');
     if (!clicked) return;
     let boardId = clicked['boardId'];
     let boardName = clicked.querySelector('h2').textContent;
