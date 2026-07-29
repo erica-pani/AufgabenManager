@@ -258,7 +258,11 @@ main h1 {
   display: none !important;
 }
 
-.member-list, .settings-in-header:hover {
+.member-list, .settings-in-header {
+  cursor: pointer;
+}
+
+.member-list:hover, .settings-in-header:hover {
     text-decoration: underline;
   }
 

@@ -69,6 +69,9 @@ public class BoardController {
         boardService.deleteBoard(boardId);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
+
+    
+    
     
     
 }
