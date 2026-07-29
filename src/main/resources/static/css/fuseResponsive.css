@@ -70,14 +70,10 @@ body {
 }
 
 .team.button {
-  margin-top: auto;
-  position: relative;
-  bottom: 0;
-  width: 100%;
+  position: absolute;
+  bottom: 10px;
+  width: 90%;
   place-self: center;
-  background: #374151;
-  text-align: center;
-  justify-content: center;
 }
 
 .team:hover {
@@ -262,14 +258,18 @@ main h1 {
   display: none !important;
 }
 
+.member-list, .settings-in-header:hover {
+    text-decoration: underline;
+  }
+
 /* ==========================================================================
    6. Kanban-Board Ansicht (Spalten & Aufgaben)
    ========================================================================== */
 .board {
   display: flex;
   gap: 20px;
-  height: 100%;
-  /* Erlaubt horizontales Wischen auf Mobilgeräten */
+  height: 96%;
+  box-sizing: border-box;
   overflow-x: auto;
   padding-bottom: 10px;
   scroll-snap-type: x mandatory;
@@ -286,6 +286,52 @@ main h1 {
   flex-shrink: 0;
   max-height: 100%;
   scroll-snap-align: start;
+}
+
+/* ==========================================================================
+   Accordion / Klappbare Kanban-Spalten
+   ========================================================================== */
+
+.column {
+  align-self: flex-start; /* Verhindert, dass ungleiche Spaltenhöhen entstehen */
+  transition: all 0.3s ease;
+}
+
+.column-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.column-header h2 {
+  margin-bottom: 0 !important; /* Entfernt alten Abstand */
+}
+
+/* Das kleine Dreieck */
+.toggle-icon {
+  font-size: 12px;
+  color: #4b5563;
+  transition: transform 0.3s ease;
+}
+
+/* Aufgaben standardmäßig ausblenden */
+.tasks-wrapper {
+  display: none;
+  margin-top: 15px;
+}
+
+/* --- Zustand 1: Hover ODER Ausgeklappt (Expanded) --- */
+.column:hover .tasks-wrapper,
+.column.expanded .tasks-wrapper {
+  display: block;
+}
+
+/* Dreieck dreht sich nach unten (180 Grad) */
+.column:hover .toggle-icon,
+.column.expanded .toggle-icon {
+  transform: rotate(180deg);
 }
 
 .column h2 {
@@ -393,13 +439,10 @@ main::-webkit-scrollbar-thumb,
   }
 
   .team.button {
-    width: 100%;
-    font-size: 0; /* Versteckt Text, zeigt nur Symbol */
-  }
-
-  .team.button::before {
-    content: "＋";
-    font-size: 20px;
+    bottom: 10px;
+    position: absolute;
+    width: 90%;
+    place-self: center;
   }
 
   header {
