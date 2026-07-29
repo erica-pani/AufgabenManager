@@ -203,6 +203,20 @@ async function changeTeam(clicked) {
     await fetchBoards(false);
 }
 
+function switchToBoard() {
+    document.querySelector('#main-header').classList.add('hidden');
+    document.querySelector('#team-header').classList.remove('hidden');
+    document.querySelector('.board').classList.remove('hidden');
+    boardList.classList.add('hidden');
+}
+
+function switchToTeam() {
+    document.querySelector('#main-header').classList.remove('hidden');
+    document.querySelector('#team-header').classList.add('hidden');
+    document.querySelector('.board').classList.add('hidden');
+    boardList.classList.remove('hidden');
+}
+
 export function renderTeam(team) {
     const newTeam = document.createElement('button');
 
@@ -301,11 +315,13 @@ teamList.addEventListener('click', (event) => {
     const clicked = event.target.closest('.team');
     if (!clicked) return;
 
+    switchToTeam();
     changeTeam(clicked);
 });
 
 document.querySelector('#private').addEventListener('click', (event) =>{
     const clicked = event.target.closest('.team');
+    switchToTeam();
     changeTeam(clicked);
 
     console.log(privateCache);
@@ -317,6 +333,6 @@ boardList.addEventListener('click', (event) => {
     if (!clicked) return;
     let boardId = clicked['boardId'];
     let boardName = clicked.querySelector('h2').textContent;
-    saveToCache();
-    location.href = ENDPOINTS.BOARD_UI(boardName, boardId);
+    // fetch aufgaben von dem Board
+    switchToBoard();
 });

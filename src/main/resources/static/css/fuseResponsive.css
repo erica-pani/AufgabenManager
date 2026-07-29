@@ -5,17 +5,20 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
 }
 
 body {
   background: #f4f6fa;
   height: 100vh;
+  /* Verhindert ungewolltes Herumspringen auf Mobilgeräten */
+  overflow: hidden; 
 }
 
 .container {
   display: flex;
   height: 100vh;
+  width: 100vw;
 }
 
 /* ==========================================================================
@@ -29,6 +32,8 @@ body {
   display: flex;
   flex-direction: column;
   position: relative;
+  flex-shrink: 0;
+  z-index: 10;
 }
 
 .sidebar h2 {
@@ -45,6 +50,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  overflow-y: auto;
+  max-height: calc(100vh - 250px);
 }
 
 .team {
@@ -57,13 +64,20 @@ body {
   cursor: pointer;
   transition: 0.2s;
   font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .team.button {
-  position: absolute;
-  bottom: 10px;
-  width: 90%;
+  margin-top: auto;
+  position: relative;
+  bottom: 0;
+  width: 100%;
   place-self: center;
+  background: #374151;
+  text-align: center;
+  justify-content: center;
 }
 
 .team:hover {
@@ -81,6 +95,7 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-width: 0; /* Verhindert Layout-Brechungen bei Flexbox */
 }
 
 header {
@@ -91,22 +106,26 @@ header {
   align-items: center;
   padding: 0 40px;
   border-bottom: 1px solid #ddd;
+  flex-shrink: 0;
 }
 
 .logo {
   font-size: 22px;
   font-weight: bold;
+  white-space: nowrap;
 }
 
 nav {
   color: #777;
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
 main {
   flex: 1;
   padding: 40px;
   overflow: auto;
-  overflow-x: auto;
 }
 
 main h1 {
@@ -118,11 +137,10 @@ main h1 {
    ========================================================================== */
 .boards {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 25px;
 }
 
-/* Board-Karten in der Übersicht (Klasse .board-card nutzen, um Konflikt mit Kanban zu vermeiden) */
 .board-card,
 .boards .board {
   background: white;
@@ -136,7 +154,7 @@ main h1 {
 
 .board-card:hover,
 .boards .board:hover {
-  transform: translateY(-5px);
+  transform: translateY(-3px);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
 }
 
@@ -150,7 +168,6 @@ main h1 {
   color: #666;
 }
 
-/* Neues Board Button/Karte */
 .add-board {
   display: flex;
   flex-direction: column;
@@ -183,46 +200,53 @@ main h1 {
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 }
 
 .board-creation {
-  position: absolute;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 200px;
-  width: 400px;
+  padding: 30px 20px;
+  width: 100%;
+  max-width: 400px;
   background-color: white;
-  border-radius: 30px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   z-index: 1000;
 }
 
 .board-creation input {
-  width: 250px;
-  height: 35px;
+  width: 100%;
+  max-width: 300px;
+  height: 42px;
   border: 1px solid #d1d5db;
   border-radius: 10px;
   margin: 20px 0;
-  padding: 14px;
+  padding: 0 14px;
+  font-size: 16px;
 }
 
 .board-creation input:focus {
-  outline: black;
+  outline: 2px solid #2563eb;
+  border-color: transparent;
 }
 
 .board-creation button {
-  height: 40px;
-  width: 150px;
+  height: 44px;
+  width: 100%;
+  max-width: 180px;
   border-radius: 50px;
   border: none;
   cursor: pointer;
   background-color: #2563eb;
   color: white;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .board-creation button:hover {
@@ -243,32 +267,39 @@ main h1 {
    ========================================================================== */
 .board {
   display: flex;
-  gap: 25px;
-  min-height: 100%;
+  gap: 20px;
+  height: 100%;
+  /* Erlaubt horizontales Wischen auf Mobilgeräten */
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scroll-snap-type: x mandatory;
 }
 
-/* Spalten */
 .column {
-  min-width: 320px;
+  min-width: 300px;
+  width: 320px;
   background: #e9edf5;
   border-radius: 15px;
   padding: 18px;
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
+  max-height: 100%;
+  scroll-snap-align: start;
 }
 
 .column h2 {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   color: #1f2937;
+  font-size: 18px;
 }
 
-/* Aufgaben-Karten */
 .task {
   background: white;
   border-radius: 12px;
   padding: 15px;
-  margin-bottom: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  margin-bottom: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   transition: 0.2s;
   cursor: pointer;
 }
@@ -278,8 +309,8 @@ main h1 {
 }
 
 .task h3 {
-  margin-bottom: 8px;
-  font-size: 17px;
+  margin-bottom: 6px;
+  font-size: 16px;
 }
 
 .task p {
@@ -287,7 +318,6 @@ main h1 {
   font-size: 14px;
 }
 
-/* Neue Aufgabe Eingabe */
 .add-task {
   margin-top: auto;
   display: flex;
@@ -297,21 +327,30 @@ main h1 {
 
 .add-task input {
   flex: 1;
-  padding: 12px;
-  border: none;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
   border-radius: 10px;
   outline: none;
+  font-size: 14px;
+}
+
+.add-task input:focus {
+  border-color: #2563eb;
 }
 
 .add-task button {
-  width: 45px;
+  width: 42px;
+  height: 42px;
   border: none;
   border-radius: 10px;
   background: #2563eb;
   color: white;
-  font-size: 22px;
+  font-size: 20px;
   cursor: pointer;
   transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .add-task button:hover {
@@ -319,21 +358,26 @@ main h1 {
 }
 
 /* Custom Scrollbar */
-main::-webkit-scrollbar {
-  height: 10px;
+main::-webkit-scrollbar,
+.board::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
 }
 
-main::-webkit-scrollbar-thumb {
+main::-webkit-scrollbar-thumb,
+.board::-webkit-scrollbar-thumb {
   background: #c2c7d0;
   border-radius: 10px;
 }
 
 /* ==========================================================================
-   7. Responsive Design
+   7. Responsive Design (Tablets & Mobile)
    ========================================================================== */
-@media (max-width: 850px) {
+
+/* Tablets & kleine Laptops */
+@media (max-width: 900px) {
   .sidebar {
-    width: 80px;
+    width: 70px;
     padding: 20px 10px;
   }
 
@@ -344,7 +388,18 @@ main::-webkit-scrollbar-thumb {
 
   .team {
     text-align: center;
-    padding: 15px;
+    padding: 12px 5px;
+    justify-content: center;
+  }
+
+  .team.button {
+    width: 100%;
+    font-size: 0; /* Versteckt Text, zeigt nur Symbol */
+  }
+
+  .team.button::before {
+    content: "＋";
+    font-size: 20px;
   }
 
   header {
@@ -353,5 +408,101 @@ main::-webkit-scrollbar-thumb {
 
   main {
     padding: 20px;
+  }
+}
+
+/* Smartphones (Mobilgeräte) */
+@media (max-width: 600px) {
+  .container {
+    flex-direction: column;
+  }
+
+  /* Sidebar wird zur kompakten Topbar */
+  .sidebar {
+    width: 100%;
+    height: auto;
+    padding: 10px 15px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .sidebar h2 {
+    display: block;
+    margin-bottom: 0;
+    font-size: 18px;
+  }
+
+  .sidebar h3 {
+    display: none;
+  }
+
+  .team-list {
+    flex-direction: row;
+    overflow-x: auto;
+    max-height: none;
+    gap: 8px;
+  }
+
+  .team {
+    padding: 8px 12px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .team.button {
+    position: relative;
+    width: auto;
+    margin-top: 0;
+    font-size: 13px;
+    padding: 8px 12px;
+  }
+
+  .team.button::before {
+    content: "";
+  }
+
+  /* Header Anpassungen */
+  header {
+    height: 55px;
+    padding: 0 15px;
+  }
+
+  .logo {
+    font-size: 18px;
+  }
+
+  nav {
+    font-size: 13px;
+  }
+
+  main {
+    padding: 15px 10px;
+  }
+
+  /* Dashboard Grid auf Smartphones */
+  .boards {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  /* Kanban Spalten auf Smartphones */
+  .board {
+    gap: 15px;
+  }
+
+  .column {
+    width: 85vw; /* Zeigt eine Spalte fast bildschirmfüllend, nächste ragt leicht hinein */
+    min-width: 85vw;
+  }
+
+  /* Modal-Größe anpassen */
+  .board-creation {
+    width: 90%;
+    padding: 20px 15px;
+  }
+
+  .board-creation input {
+    font-size: 16px; /* Verhindert automatisches Zoomen in iOS */
   }
 }

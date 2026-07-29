@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aufgaben Manager</title>
-    <link rel="stylesheet" href="/css/fuse.css">
+    <link rel="stylesheet" href="/css/fuseResponsive.css">
 
     <link rel="icon" type="image/png" href="/img/favicon.png">
 </head>
@@ -33,15 +33,27 @@
     <!-- Hauptbereich -->
     <div class="content">
 
-        <header>
+        <header id="main-header">
 
             <div class="logo">
                 Entwickler
             </div>
 
             <nav>
-                <!-- Hier später Navigation -->
                 <span>Navigation Platzhalter</span>
+            </nav>
+
+        </header>
+
+        <header id="team-header" class="hidden">
+
+            <div class="logo">
+                Entwickler
+            </div>
+
+            <!--Mitglieder | Einstellungen-->
+            <nav>
+                <span>Mitglieder</span> <span> | </span> <span>Einstellungen</span>
             </nav>
 
         </header>
@@ -136,8 +148,6 @@
             </div>
 
 
-            <!--homeAnsicht-->
-
             <div id="modal-overlay" class="overlay hidden">
                 <div id="board-creation-card" class="board-creation">
                     <h2 id="card-header">Neues Board</h2>
@@ -147,7 +157,8 @@
                 </div>
             </div>
 
-            <h1>Boards</h1>
+            <!--homeAnsicht-->
+            <h1></h1>
 
             <section id="board-list" class="boards">
 
@@ -164,6 +175,7 @@
 
 </div>
 
+<script src="/js/board.js" type="module" defer></script>
 <script src="/js/mainRefac.js" type="module" defer></script>
 </body>
 </html>

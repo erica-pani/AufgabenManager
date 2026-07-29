@@ -23,7 +23,7 @@ public class UIController {
     }
 
     @GetMapping("/{boardName}")
-    public String board(@PathVariable String boardName, @RequestParam(name = "bid", required = true) Long boardId, Model model) {
+    public String board(@RequestParam(name = "bN", required = true) String boardName, @RequestParam(name = "bid", required = true) Long boardId, Model model) {
         model.addAttribute("boardName", boardName);
         model.addAttribute("boardId", boardId);
         return "board";
