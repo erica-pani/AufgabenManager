@@ -10,10 +10,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
+@RequestMapping("/api/v1/auth")
 public class AuthController {
 
     private final JWTService jwtService;
@@ -26,7 +28,7 @@ public class AuthController {
         this.userDetailsService = userDetailsService;
     }
     
-    /*@PostMapping("/login/check")
+    @PostMapping("/login/check")
     public ResponseEntity<?> authenticate(@RequestParam String username, @RequestParam String password) {
         
         authenticationManager.authenticate(
@@ -35,7 +37,7 @@ public class AuthController {
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         
-        return ResponseEntity.ok(jwtService.generateToken(username));
+        return ResponseEntity.ok(jwtService.generateToken(userDetails.getUsername()));
     }
-    */
+    
 }

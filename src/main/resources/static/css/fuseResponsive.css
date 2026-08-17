@@ -1,0 +1,555 @@
+/* ==========================================================================
+   1. Grundeinstellungen & Layout
+   ========================================================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background: #f4f6fa;
+  height: 100vh;
+  /* Verhindert ungewolltes Herumspringen auf Mobilgeräten */
+  overflow: hidden; 
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* ==========================================================================
+   2. Sidebar
+   ========================================================================== */
+.sidebar {
+  width: 260px;
+  background: #1f2937;
+  color: white;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.sidebar h2 {
+  margin-bottom: 40px;
+}
+
+.sidebar h3 {
+  margin: 30px 0 15px;
+  color: #cbd5e1;
+  font-size: 15px;
+}
+
+.team-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  max-height: calc(100vh - 250px);
+}
+
+.team {
+  border: none;
+  background: transparent;
+  color: white;
+  text-align: left;
+  padding: 12px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.team.button {
+  position: absolute;
+  bottom: 10px;
+  width: 90%;
+  place-self: center;
+}
+
+.team:hover {
+  background: #374151;
+}
+
+.team.active {
+  background: #2563eb;
+}
+
+/* ==========================================================================
+   3. Hauptbereich & Header
+   ========================================================================== */
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* Verhindert Layout-Brechungen bei Flexbox */
+}
+
+header {
+  height: 70px;
+  background: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  border-bottom: 1px solid #ddd;
+  flex-shrink: 0;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+nav {
+  color: #777;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+main {
+  flex: 1;
+  padding: 40px;
+  overflow: auto;
+}
+
+main h1 {
+  margin-bottom: 30px;
+}
+
+/* ==========================================================================
+   4. Dashboard / Boards-Übersicht
+   ========================================================================== */
+.boards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 25px;
+}
+
+.board-card,
+.boards .board {
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  min-height: 170px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.board-card:hover,
+.boards .board:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+.board-card h2,
+.boards .board h2 {
+  margin-bottom: 15px;
+}
+
+.board-card p,
+.boards .board p {
+  color: #666;
+}
+
+.add-board {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #888;
+  border: 2px dashed #bbb;
+  background: #fafafa;
+}
+
+.add-board span {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.add-board:hover {
+  background: #eef3ff;
+  border-color: #2563eb;
+  color: #2563eb;
+}
+
+/* ==========================================================================
+   5. Modals / Overlay (Board Erstellung)
+   ========================================================================== */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.board-creation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 20px;
+  width: 100%;
+  max-width: 400px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+}
+
+.board-creation input {
+  width: 100%;
+  max-width: 300px;
+  height: 42px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  margin: 20px 0;
+  padding: 0 14px;
+  font-size: 16px;
+}
+
+.board-creation input:focus {
+  outline: 2px solid #2563eb;
+  border-color: transparent;
+}
+
+.board-creation button {
+  height: 44px;
+  width: 100%;
+  max-width: 180px;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  background-color: #2563eb;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.board-creation button:hover {
+  background-color: #1f54c7;
+}
+
+.board-creation button:active {
+  transform: scale(0.98);
+}
+
+.hidden,
+.board-creation .hidden {
+  display: none !important;
+}
+
+.member-list, .settings-in-header {
+  cursor: pointer;
+}
+
+.member-list:hover, .settings-in-header:hover {
+    text-decoration: underline;
+  }
+
+/* ==========================================================================
+   6. Kanban-Board Ansicht (Spalten & Aufgaben)
+   ========================================================================== */
+.board {
+  display: flex;
+  gap: 20px;
+  height: 96%;
+  box-sizing: border-box;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scroll-snap-type: x mandatory;
+}
+
+.column {
+  min-width: 300px;
+  width: 320px;
+  background: #e9edf5;
+  border-radius: 15px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  max-height: 100%;
+  scroll-snap-align: start;
+}
+
+/* ==========================================================================
+   Accordion / Klappbare Kanban-Spalten
+   ========================================================================== */
+
+.column {
+  align-self: flex-start; /* Verhindert, dass ungleiche Spaltenhöhen entstehen */
+  transition: all 0.3s ease;
+}
+
+.column-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.column-header h2 {
+  margin-bottom: 0 !important; /* Entfernt alten Abstand */
+}
+
+/* Das kleine Dreieck */
+.toggle-icon {
+  font-size: 12px;
+  color: #4b5563;
+  transition: transform 0.3s ease;
+}
+
+/* Aufgaben standardmäßig ausblenden */
+.tasks-wrapper {
+  display: none;
+  margin-top: 15px;
+}
+
+/* --- Zustand 1: Hover ODER Ausgeklappt (Expanded) --- */
+.column:hover .tasks-wrapper,
+.column.expanded .tasks-wrapper {
+  display: block;
+}
+
+/* Dreieck dreht sich nach unten (180 Grad) */
+.column:hover .toggle-icon,
+.column.expanded .toggle-icon {
+  transform: rotate(180deg);
+}
+
+.column h2 {
+  margin-bottom: 15px;
+  color: #1f2937;
+  font-size: 18px;
+}
+
+.task {
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.task:hover {
+  transform: translateY(-2px);
+}
+
+.task h3 {
+  margin-bottom: 6px;
+  font-size: 16px;
+}
+
+.task p {
+  color: #666;
+  font-size: 14px;
+}
+
+.add-task {
+  margin-top: auto;
+  display: flex;
+  gap: 10px;
+  padding-top: 15px;
+}
+
+.add-task input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  outline: none;
+  font-size: 14px;
+}
+
+.add-task input:focus {
+  border-color: #2563eb;
+}
+
+.add-task button {
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 10px;
+  background: #2563eb;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-task button:hover {
+  background: #1d4ed8;
+}
+
+/* Custom Scrollbar */
+main::-webkit-scrollbar,
+.board::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+main::-webkit-scrollbar-thumb,
+.board::-webkit-scrollbar-thumb {
+  background: #c2c7d0;
+  border-radius: 10px;
+}
+
+/* ==========================================================================
+   7. Responsive Design (Tablets & Mobile)
+   ========================================================================== */
+
+/* Tablets & kleine Laptops */
+@media (max-width: 900px) {
+  .sidebar {
+    width: 70px;
+    padding: 20px 10px;
+  }
+
+  .sidebar h2,
+  .sidebar h3 {
+    display: none;
+  }
+
+  .team {
+    text-align: center;
+    padding: 12px 5px;
+    justify-content: center;
+  }
+
+  .team.button {
+    bottom: 10px;
+    position: absolute;
+    width: 90%;
+    place-self: center;
+  }
+
+  header {
+    padding: 0 20px;
+  }
+
+  main {
+    padding: 20px;
+  }
+}
+
+/* Smartphones (Mobilgeräte) */
+@media (max-width: 600px) {
+  .container {
+    flex-direction: column;
+  }
+
+  /* Sidebar wird zur kompakten Topbar */
+  .sidebar {
+    width: 100%;
+    height: auto;
+    padding: 10px 15px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .sidebar h2 {
+    display: block;
+    margin-bottom: 0;
+    font-size: 18px;
+  }
+
+  .sidebar h3 {
+    display: none;
+  }
+
+  .team-list {
+    flex-direction: row;
+    overflow-x: auto;
+    max-height: none;
+    gap: 8px;
+  }
+
+  .team {
+    padding: 8px 12px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .team.button {
+    position: relative;
+    width: auto;
+    margin-top: 0;
+    font-size: 13px;
+    padding: 8px 12px;
+  }
+
+  .team.button::before {
+    content: "";
+  }
+
+  /* Header Anpassungen */
+  header {
+    height: 55px;
+    padding: 0 15px;
+  }
+
+  .logo {
+    font-size: 18px;
+  }
+
+  nav {
+    font-size: 13px;
+  }
+
+  main {
+    padding: 15px 10px;
+  }
+
+  /* Dashboard Grid auf Smartphones */
+  .boards {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  /* Kanban Spalten auf Smartphones */
+  .board {
+    gap: 15px;
+  }
+
+  .column {
+    width: 85vw; /* Zeigt eine Spalte fast bildschirmfüllend, nächste ragt leicht hinein */
+    min-width: 85vw;
+  }
+
+  /* Modal-Größe anpassen */
+  .board-creation {
+    width: 90%;
+    padding: 20px 15px;
+  }
+
+  .board-creation input {
+    font-size: 16px; /* Verhindert automatisches Zoomen in iOS */
+  }
+}

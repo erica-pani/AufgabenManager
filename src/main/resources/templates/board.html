@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html xmlns:th="http://www.thymeleaf.org" lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,24 +17,22 @@
 
         <h2>TaskManager</h2>
 
-        <button class="team active">🏠 Privat</button>
+        <button id="private" class="team active">
+            🏠 Privat
+        </button>
 
         <h3>Teams</h3>
 
         <div class="team-list">
-            <button class="team">👨‍💻 Entwickler</button>
-            <button class="team">🎨 Design</button>
-            <button class="team">📈 Marketing</button>
-            <button class="team">💼 Management</button>
-            <button class="team">+ Neues Team</button>
+            
         </div>
-
+        <div id="new-team-button" class="team button">+ Neues Team</div>
     </aside>
 
     <div class="content">
 
         <header>
-            <div class="logo">Projekt Alpha</div>
+            <div th:text="${boardName}" class="logo"> </div>
 
             <nav>
                 <span>Mitglieder | Einstellungen</span>
@@ -136,5 +134,6 @@
 
 </div>
 
+<script src="/js/board.js" type="module" defer></script>
 </body>
 </html>

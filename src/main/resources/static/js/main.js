@@ -9,11 +9,12 @@ const teamList = document.querySelector('.team-list');
 let user_id;
 let username;
 let currentTeam = null; // id vom aktuellen Team
+let currentBoard = null; // id vom geöffneten Board, falls geöffnet
 
 const privateCache = []; // cache für private borads
 let publicCache = {}; //cache für public boards
 
-async function fecthData(url, method, body) {
+export async function fecthData(url, method, body) {
     
     const fetchInfo = {
         method: method,
@@ -91,7 +92,7 @@ function cacheBoard(board) {
     */
 }
 
-async function fetchTeams() {
+export async function fetchTeams() {
     const url = `/team/teams?userId=${user_id}`;
 
     const teams = await fecthData(url, 'GET', null);
@@ -162,7 +163,7 @@ async function onAppStart() {
     await fetchBoards(true);
 }
 
-function renderTeam(team) {
+export function renderTeam(team) {
     const newTeam  = document.createElement('button');
 
     newTeam.textContent = `${team.name}`;

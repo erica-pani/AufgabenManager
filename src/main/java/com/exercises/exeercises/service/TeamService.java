@@ -62,6 +62,14 @@ public class TeamService {
         teamRepository.deleteById(teamId);
     }
 
+    public Collection<User> getTeamMember(Long teamId) {
+
+        Team team = teamRepository.findById(teamId)
+            .orElseThrow(() -> new EntityNotFoundException("Team mit dieser Id existiert nicht.Sorgen sie dafür das eine Entität mit dieser Id in der Datenbank vorhanden ist"));
+
+        return team.getMember() == null ? new HashSet<>() : team.getMember();
+    }
+
     public Collection<TeamDTO> myTeams(long userId) {
 
         if (!userRepository.existsById(userId)) {

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aufgaben Manager</title>
-    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/fuseResponsive.css">
 
     <link rel="icon" type="image/png" href="/img/favicon.png">
 </head>
@@ -33,20 +33,125 @@
     <!-- Hauptbereich -->
     <div class="content">
 
-        <header>
+        <header id="main-header">
 
             <div class="logo">
                 Entwickler
             </div>
 
             <nav>
-                <!-- Hier später Navigation -->
                 <span>Navigation Platzhalter</span>
             </nav>
 
         </header>
 
+        <header id="team-header" class="hidden">
+
+            <div class="logo">
+                Entwickler
+            </div>
+
+            <!--Mitglieder | Einstellungen-->
+            <nav>
+                <span class="member-list">Mitglieder</span> <span> | </span> <span class="settings-in-header">Einstellungen</span>
+            </nav>
+
+        </header>
+
         <main>
+
+             <div class="board hidden">
+
+                <!-- Kategorie -->
+                <section class="column">
+
+                    <!-- Header mit Titel und Pfeil-Icon -->
+                    <div class="column-header">
+                        <h2>📋 To Do</h2>
+                        <span class="toggle-icon">▲</span>
+                    </div>
+
+                    <!-- Wrapper für alle Aufgaben & Eingabefeld -->
+                    <div class="tasks-wrapper">
+                        <div class="task">
+                            <h3>Login erstellen</h3>
+                            <p>Frontend entwickeln</p>
+                        </div>
+
+                        <div class="task">
+                            <h3>Datenbank</h3>
+                            <p>Tabellen anlegen</p>
+                        </div>
+
+                        <div class="add-task">
+                            <input type="text" placeholder="Neue Aufgabe">
+                            <button>+</button>
+                        </div>
+                    </div>
+
+                </section>
+
+                <!-- Kategorie -->
+                <section class="column">
+
+                    <!-- Header mit Titel und Pfeil-Icon -->
+                    <div class="column-header">
+                        <h2>📋 To Do</h2>
+                        <span class="toggle-icon">▲</span>
+                    </div>
+
+                    <!-- Wrapper für alle Aufgaben & Eingabefeld -->
+                    <div class="tasks-wrapper">
+                        <div class="task">
+                            <h3>Login erstellen</h3>
+                            <p>Frontend entwickeln</p>
+                        </div>
+
+                        <div class="task">
+                            <h3>Datenbank</h3>
+                            <p>Tabellen anlegen</p>
+                        </div>
+
+                        <div class="add-task">
+                            <input type="text" placeholder="Neue Aufgabe">
+                            <button>+</button>
+                        </div>
+                    </div>
+
+                </section>
+
+                <!-- Kategorie -->
+                <section class="column">
+
+                   <!-- Header mit Titel und Pfeil-Icon -->
+                    <div class="column-header">
+                        <h2>📋 To Do</h2>
+                        <span class="toggle-icon">▲</span>
+                    </div>
+
+                    <!-- Wrapper für alle Aufgaben & Eingabefeld -->
+                    <div class="tasks-wrapper">
+                        <div class="task">
+                            <h3>Login erstellen</h3>
+                            <p>Frontend entwickeln</p>
+                        </div>
+
+                        <div class="task">
+                            <h3>Datenbank</h3>
+                            <p>Tabellen anlegen</p>
+                        </div>
+
+                        <div class="add-task">
+                            <input type="text" placeholder="Neue Aufgabe">
+                            <button>+</button>
+                        </div>
+                    </div>
+
+                </section>
+
+            </div>
+
+
             <div id="modal-overlay" class="overlay hidden">
                 <div id="board-creation-card" class="board-creation">
                     <h2 id="card-header">Neues Board</h2>
@@ -56,7 +161,8 @@
                 </div>
             </div>
 
-            <h1>Boards</h1>
+            <!--homeAnsicht-->
+            <h1></h1>
 
             <section id="board-list" class="boards">
 
@@ -73,6 +179,7 @@
 
 </div>
 
-<script src="/js/mainRefac.js"></script>
+<script src="/js/board.js" type="module" defer></script>
+<script src="/js/mainRefac.js" type="module" defer></script>
 </body>
 </html>
