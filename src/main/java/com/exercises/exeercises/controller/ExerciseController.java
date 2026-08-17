@@ -1,6 +1,8 @@
 package com.exercises.exeercises.controller;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.exercises.exeercises.controller.mapper.ExerciseMapper;
 import com.exercises.exeercises.model.Exercise;
+import com.exercises.exeercises.model.User;
 import com.exercises.exeercises.model.dto.ExerciseDTO;
 import com.exercises.exeercises.model.dto.ExerciseResponseDTO;
 import com.exercises.exeercises.model.id.ExerciseId;
@@ -81,5 +84,7 @@ public class ExerciseController {
         exerciseService.deleteExercise(new ExerciseId(boardId, exerciseNumber));
         return ResponseEntity.status(HttpStatus.ACCEPTED).body("Aufgabe wurde geloescht");
     }
+
+
     
 }

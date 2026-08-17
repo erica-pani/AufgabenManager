@@ -9,6 +9,7 @@ const teamList = document.querySelector('.team-list');
 let user_id;
 let username;
 let currentTeam = null; // id vom aktuellen Team
+let currentBoard = null; // id vom geöffneten Board, falls geöffnet
 
 const privateCache = []; // cache für private borads
 let publicCache = {}; //cache für public boards

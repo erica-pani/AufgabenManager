@@ -1,5 +1,6 @@
 package com.exercises.exeercises.config;
 
+import com.exercises.exeercises.config.filter.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,8 +11,10 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.exercises.exeercises.service.MyUserDetailsService;
 
@@ -20,12 +23,15 @@ import com.exercises.exeercises.service.MyUserDetailsService;
 @EnableMethodSecurity
 public class SecurityConfig {
     
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
     private final int STRENGTH = 10;
 
     private final MyUserDetailsService userDetailsService;
 
-    SecurityConfig(MyUserDetailsService userDetailsService) {
+    SecurityConfig(MyUserDetailsService userDetailsService, JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.userDetailsService = userDetailsService;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
     @Bean
@@ -38,28 +44,19 @@ public class SecurityConfig {
                     request -> 
                         request
                             .requestMatchers(
+                                "/api/v1/auth/login/check",
                                 "/css/**",
                                 "/js/**",
-                                "/images/**",
-                                "/login",
-                                "/login/failed",
-                                "/login/check",
-                                "/user/**",
-                                "/exercise/**",
-                                "/team/**")
+                                "/images/**"
+                            )
                             .permitAll()
                             .anyRequest()
                             .authenticated())
-            .formLogin(
-                form -> 
-                    form.loginPage("/login")
-                        .loginProcessingUrl("/login/check")
-                        .defaultSuccessUrl("/", true)
-                        .failureUrl("/login/failed")
-                        .permitAll())
-            .rememberMe(remember -> remember.key("verifyer").tokenValiditySeconds(60 * 60 * 24 * 30))
-            .logout(logout -> logout.logoutUrl("/logout").deleteCookies("remember-me").permitAll())
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
             .authenticationProvider(authenticationProvider())
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
     }
 

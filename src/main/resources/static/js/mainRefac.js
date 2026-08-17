@@ -1,14 +1,15 @@
 
 const BASE_URL = ''; // Falls Backend auf gleichem Server läuft. Sonst z.B. 'http://localhost:8080'
 
-const ENDPOINTS = {
+ export const ENDPOINTS = {
     USER_ME: `${BASE_URL}/user/me`,
     BOARD_NEW: `${BASE_URL}/board/new`,
     BOARD_PRIVATE: (userId) => `${BASE_URL}/board/private/${userId}`,
     BOARD_TEAM: (teamId) => `${BASE_URL}/board/teams/${teamId}`,
     TEAM_TEAMS: `${BASE_URL}/team/teams`,
     TEAM_CREATE: `${BASE_URL}/team/create`,
-    BOARD_UI: (boardName, boardId) => `${BASE_URL}/${boardName}?bid=${boardId}`
+    BOARD_UI: (boardName, boardId) => `${BASE_URL}/${boardName}?bid=${boardId}`,
+    ADD_EXERCISE: `${BASE_URL}/exercise/add`
 };
 
 const createBoardButton = document.querySelector('#create-board-button');
@@ -18,12 +19,19 @@ const boardList = document.querySelector('#board-list');
 const newTeamButton = document.querySelector('#new-team-button');
 const teamList = document.querySelector('.team-list');
 
-let user_id;
-let username;
-let currentTeam = null; // id vom aktuellen Team
+export const state = {
+    user_id: null,
+    username: null,
+    currentTeam: null, // id vom aktuellen Team
+    currentBoard: null // id vom geöffneten Board, falls geöffnet
+}
 
 let privateCache = []; // cache für private boards
 let publicCache = {};  // cache für public boards
+
+export function getCurrentBoard() {
+    return state.currentBoard;
+}
 
 
 export async function fetchData(url, method, body) {
@@ -51,8 +59,8 @@ async function me() {
     let map = await fetchData(ENDPOINTS.USER_ME, 'GET', null);
 
     if (map) {
-        user_id = map.user_id;
-        username = map.username;
+        state.user_id = map.user_id;
+        state.username = map.username;
     }
 }
 
@@ -64,7 +72,7 @@ async function createBoard(name, ownerIsUser, ownerId) {
     };
 
     if (ownerIsUser) {
-        currentTeam = null;
+        state.currentTeam = null;
     }
 
     const res = await fetchData(ENDPOINTS.BOARD_NEW, 'POST', board);
@@ -92,7 +100,7 @@ export async function fetchTeams() {
 async function createTeam(name) {
     const teamBody = {
         name: name,
-        creatorId: user_id,
+        creatorId: state.user_id,
     };
 
     const team = await fetchData(ENDPOINTS.TEAM_CREATE, 'POST', teamBody);
@@ -105,8 +113,8 @@ async function createTeam(name) {
 // true wenn User, false wenn Team
 async function fetchBoards(userOrTeams) {
     const url = userOrTeams 
-        ? ENDPOINTS.BOARD_PRIVATE(user_id) 
-        : ENDPOINTS.BOARD_TEAM(currentTeam);
+        ? ENDPOINTS.BOARD_PRIVATE(state.user_id) 
+        : ENDPOINTS.BOARD_TEAM(state.currentTeam);
 
     let boards = await fetchData(url, 'GET', null);
 
@@ -130,11 +138,11 @@ async function fetchBoards(userOrTeams) {
 
 function cacheAllBoards(boards) {
 
-    if (!publicCache[currentTeam]) {
-        publicCache[currentTeam] = [];
+    if (!publicCache[state.currentTeam]) {
+        publicCache[state.currentTeam] = [];
     }
 
-    publicCache[currentTeam] = boards;
+    publicCache[state.currentTeam] = boards;
     /*
     if (board.ownerId === user_id) {
         if(!privateCache.includes(board)) {
@@ -153,7 +161,7 @@ function cacheAllBoards(boards) {
 }
 
 function cacheBoard(board) {
-    if (!currentTeam) {
+    if (!state.currentTeam) {
         privateCache.push(board);
         return;
     }
@@ -170,7 +178,7 @@ function clickedIsModal(event) {
 }
 
 async function changeToPrivate() {
-    currentTeam = null;
+    state.currentTeam = null;
 
     privateCache.forEach(board => {
         renderBoard(board);
@@ -194,9 +202,9 @@ async function changeTeam(clicked) {
         return;
     }
 
-    currentTeam = clicked['teamId'];
+    state.currentTeam = clicked['teamId'];
 
-    (publicCache[currentTeam] || []).forEach(board => {
+    (publicCache[state.currentTeam] || []).forEach(board => {
         renderBoard(board);
     });
 
@@ -253,8 +261,8 @@ function renderBoard(board) {
 }
 
 function saveToCache() {
-  sessionStorage.setItem('user_id', user_id);
-  sessionStorage.setItem('username', username);
+  sessionStorage.setItem('user_id', state.user_id);
+  sessionStorage.setItem('username', state.username);
   sessionStorage.setItem('privateCache', JSON.stringify(privateCache));
   sessionStorage.setItem('publicCache', JSON.stringify(publicCache));
 }
@@ -293,11 +301,11 @@ boardCreationButton.addEventListener('click', () => {
     }
 
     let ownerIsUser = false;
-    let ownerId = currentTeam;
+    let ownerId = state.currentTeam;
 
-    if (!currentTeam) {
+    if (!state.currentTeam) {
         ownerIsUser = true;
-        ownerId = user_id;
+        ownerId = state.user_id;
     }
 
     createBoard(name, ownerIsUser, ownerId);
@@ -331,7 +339,7 @@ document.querySelector('#private').addEventListener('click', (event) =>{
 boardList.addEventListener('click', (event) => {
     const clicked = event.target.closest('.board-card');
     if (!clicked) return;
-    let boardId = clicked['boardId'];
+    state.currentBoard = clicked['boardId'];
     let boardName = clicked.querySelector('h2').textContent;
     // fetch aufgaben von dem Board
     switchToBoard();
